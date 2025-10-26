@@ -31,10 +31,9 @@ public class Kysely {
     private String alkamispvm;
     private String loppumispvm;
 
-
     //konstruktorit
-
-    public Kysely(String kyselyNimi, String kyselyKuvaus, String luontipvm, String alkamispvm, String loppumispvm) {
+    public Kysely(String kyselyNimi, String kyselyKuvaus, String luontipvm, String alkamispvm,
+            String loppumispvm) {
         this.kyselyNimi = kyselyNimi;
         this.kyselyKuvaus = kyselyKuvaus;
         this.luontipvm = luontipvm;
@@ -50,9 +49,8 @@ public class Kysely {
         this.loppumispvm = null;
     }
 
-
     //getit ja setit
-    
+
      public Long getKyselyId() {
          return kyselyId;
      }
@@ -100,15 +98,19 @@ public class Kysely {
      public void setLoppumispvm(String loppumispvm) {
          this.loppumispvm = loppumispvm;
      }
+     
+     public List<Kysymys> getKysymykset() {
+         return kysymykset;
+     }
 
-
-     //toString
+     public void setKysymykset(List<Kysymys> kysymykset) {
+         this.kysymykset = kysymykset;
+     }
 
      @Override
      public String toString() {
         return "Kysely [kyselyId=" + kyselyId + ", kyselyNimi=" + kyselyNimi + ", kyselyKuvaus=" + kyselyKuvaus
                 + ", luontipvm=" + luontipvm + ", alkamispvm=" + alkamispvm + ", loppumispvm=" + loppumispvm + "]";
      }
-
-
+    
 }

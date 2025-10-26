@@ -24,40 +24,44 @@ public class Kysymys {
     private Kysely kysely;
 
     //konstruktorit
-
-    public Kysymys(String kysymysTeksti) {
+    public Kysymys(String kysymysTeksti, Kysely kysely) {
         this.kysymysTeksti = kysymysTeksti;
+        this.kysely = kysely;
     }
 
-    public Kysymys() {
+     public Kysymys() {
         this.kysymysTeksti = null;
+        this.kysely = null;
     }
-
 
     //getit ja setit
+     public Long getKysymysId() {
+         return kysymysId;
+     }
+
+     public void setKysymysId(Long kysymysId) {
+         this.kysymysId = kysymysId;
+     }
+
+     public String getKysymysTeksti() {
+         return kysymysTeksti;
+     }
+
+     public void setKysymysTeksti(String kysymysTeksti) {
+         this.kysymysTeksti = kysymysTeksti;
+     }
+
+     public Kysely getKysely() {
+         return kysely;
+     }
+
+     public void setKysely(Kysely kysely) {
+         this.kysely = kysely;
+     }
+
+     @Override
+     public String toString() {
+        return "Kysymys [kysymysId=" + kysymysId + ", kysymysTeksti=" + kysymysTeksti + ", kysely=" + kysely + "]";
+     }
     
-    public Long getKysymysId() {
-        return kysymysId;
-    }
-
-    public void setKysymysId(Long kysymysId) {
-        this.kysymysId = kysymysId;
-    }
-
-    public String getKysymysTeksti() {
-        return kysymysTeksti;
-    }
-
-    public void setKysymysTeksti(String kysymysTeksti) {
-        this.kysymysTeksti = kysymysTeksti;
-    }
-  
-
-    //toString
-
-   @Override
-    public String toString() {
-        return "Kysymys [kysymysId=" + kysymysId + ", kysymysTeksti=" + kysymysTeksti + "]";
-    }
-
 }
