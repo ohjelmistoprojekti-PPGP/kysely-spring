@@ -1,5 +1,7 @@
 package ppg.spring.springrepository.domain;
 
-public interface KysymysRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface KysymysRepository extends CrudRepository<Kysymys, Long> {
 
 }

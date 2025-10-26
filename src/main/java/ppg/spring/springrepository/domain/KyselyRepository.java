@@ -1,5 +1,7 @@
 package ppg.spring.springrepository.domain;
 
-public interface KyselyRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface KyselyRepository extends CrudRepository<Kysely, Long> {
 
 }
