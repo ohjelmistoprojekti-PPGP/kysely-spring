@@ -22,16 +22,12 @@ public class Question {
     private Survey survey;
 
     // konstruktorit
-    public Question(Long questionId, String questionText, Survey survey) {
-        this.questionId = questionId;
+    public Question(String questionText, Survey survey) {
         this.questionText = questionText;
         this.survey = survey;
     }
 
     public Question() {
-        this.questionId = null;
-        this.questionText = null;
-        this.survey = null;
     }
 
     // getit ja setit
