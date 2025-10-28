@@ -1,5 +1,6 @@
 package ppg.spring.springrepository.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,10 +19,11 @@ public class Kysely {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long kyselyId;
 
-    private List<Kysymys> kysymykset;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kysely")
     @JsonIgnore
+
+    private List<Kysymys> kysymykset = new ArrayList<>();
+
 
     // attribuutit
 
