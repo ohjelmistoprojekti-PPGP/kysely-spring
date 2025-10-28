@@ -34,7 +34,7 @@ public class KyselyController {
         return "addnewkysely"; // addnewkysely.html
     }
 
-    @PostMapping("/save")
+    @PostMapping("/savekysely")
     public String save(Kysely kysely) {
         kyselyRepository.save(kysely);
         return "redirect:index";
