@@ -17,6 +17,8 @@ public class Kysely {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long kyselyId;
+
     private List<Kysymys> kysymykset;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kysely")
@@ -24,14 +26,13 @@ public class Kysely {
 
     // attribuutit
 
-    private Long kyselyId;
     private String kyselyNimi;
     private String kyselyKuvaus;
     private String luontipvm;
     private String alkamispvm;
     private String loppumispvm;
 
-    //konstruktorit
+    // konstruktorit
     public Kysely(String kyselyNimi, String kyselyKuvaus, String luontipvm, String alkamispvm,
             String loppumispvm) {
         this.kyselyNimi = kyselyNimi;
@@ -41,7 +42,7 @@ public class Kysely {
         this.loppumispvm = loppumispvm;
     }
 
-     public Kysely() {
+    public Kysely() {
         this.kyselyNimi = null;
         this.kyselyKuvaus = null;
         this.luontipvm = null;
@@ -49,68 +50,68 @@ public class Kysely {
         this.loppumispvm = null;
     }
 
-    //getit ja setit
+    // getit ja setit
 
-     public Long getKyselyId() {
-         return kyselyId;
-     }
+    public Long getKyselyId() {
+        return kyselyId;
+    }
 
-     public void setKyselyId(Long kyselyId) {
-         this.kyselyId = kyselyId;
-     }
+    public void setKyselyId(Long kyselyId) {
+        this.kyselyId = kyselyId;
+    }
 
-     public String getKyselyNimi() {
-         return kyselyNimi;
-     }
+    public String getKyselyNimi() {
+        return kyselyNimi;
+    }
 
-     public void setKyselyNimi(String kyselyNimi) {
-         this.kyselyNimi = kyselyNimi;
-     }
+    public void setKyselyNimi(String kyselyNimi) {
+        this.kyselyNimi = kyselyNimi;
+    }
 
-     public String getKyselyKuvaus() {
-         return kyselyKuvaus;
-     }
+    public String getKyselyKuvaus() {
+        return kyselyKuvaus;
+    }
 
-     public void setKyselyKuvaus(String kyselyKuvaus) {
-         this.kyselyKuvaus = kyselyKuvaus;
-     }
+    public void setKyselyKuvaus(String kyselyKuvaus) {
+        this.kyselyKuvaus = kyselyKuvaus;
+    }
 
-     public String getLuontipvm() {
-         return luontipvm;
-     }
+    public String getLuontipvm() {
+        return luontipvm;
+    }
 
-     public void setLuontipvm(String luontipvm) {
-         this.luontipvm = luontipvm;
-     }
+    public void setLuontipvm(String luontipvm) {
+        this.luontipvm = luontipvm;
+    }
 
-     public String getAlkamispvm() {
-         return alkamispvm;
-     }
+    public String getAlkamispvm() {
+        return alkamispvm;
+    }
 
-     public void setAlkamispvm(String alkamispvm) {
-         this.alkamispvm = alkamispvm;
-     }
+    public void setAlkamispvm(String alkamispvm) {
+        this.alkamispvm = alkamispvm;
+    }
 
-     public String getLoppumispvm() {
-         return loppumispvm;
-     }
+    public String getLoppumispvm() {
+        return loppumispvm;
+    }
 
-     public void setLoppumispvm(String loppumispvm) {
-         this.loppumispvm = loppumispvm;
-     }
-     
-     public List<Kysymys> getKysymykset() {
-         return kysymykset;
-     }
+    public void setLoppumispvm(String loppumispvm) {
+        this.loppumispvm = loppumispvm;
+    }
 
-     public void setKysymykset(List<Kysymys> kysymykset) {
-         this.kysymykset = kysymykset;
-     }
+    public List<Kysymys> getKysymykset() {
+        return kysymykset;
+    }
 
-     @Override
-     public String toString() {
+    public void setKysymykset(List<Kysymys> kysymykset) {
+        this.kysymykset = kysymykset;
+    }
+
+    @Override
+    public String toString() {
         return "Kysely [kyselyId=" + kyselyId + ", kyselyNimi=" + kyselyNimi + ", kyselyKuvaus=" + kyselyKuvaus
                 + ", luontipvm=" + luontipvm + ", alkamispvm=" + alkamispvm + ", loppumispvm=" + loppumispvm + "]";
-     }
-    
+    }
+
 }

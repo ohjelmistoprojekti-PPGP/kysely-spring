@@ -7,61 +7,60 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-
 @Entity
 
 public class Kysymys {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-     //attribuutit
     private Long kysymysId;
+
+    // attribuutit
     private String kysymysTeksti;
 
     @ManyToOne
     @JoinColumn(name = "kyselyId")
     private Kysely kysely;
 
-    //konstruktorit
+    // konstruktorit
     public Kysymys(String kysymysTeksti, Kysely kysely) {
         this.kysymysTeksti = kysymysTeksti;
         this.kysely = kysely;
     }
 
-     public Kysymys() {
+    public Kysymys() {
         this.kysymysTeksti = null;
         this.kysely = null;
     }
 
-    //getit ja setit
-     public Long getKysymysId() {
-         return kysymysId;
-     }
+    // getit ja setit
+    public Long getKysymysId() {
+        return kysymysId;
+    }
 
-     public void setKysymysId(Long kysymysId) {
-         this.kysymysId = kysymysId;
-     }
+    public void setKysymysId(Long kysymysId) {
+        this.kysymysId = kysymysId;
+    }
 
-     public String getKysymysTeksti() {
-         return kysymysTeksti;
-     }
+    public String getKysymysTeksti() {
+        return kysymysTeksti;
+    }
 
-     public void setKysymysTeksti(String kysymysTeksti) {
-         this.kysymysTeksti = kysymysTeksti;
-     }
+    public void setKysymysTeksti(String kysymysTeksti) {
+        this.kysymysTeksti = kysymysTeksti;
+    }
 
-     public Kysely getKysely() {
-         return kysely;
-     }
+    public Kysely getKysely() {
+        return kysely;
+    }
 
-     public void setKysely(Kysely kysely) {
-         this.kysely = kysely;
-     }
+    public void setKysely(Kysely kysely) {
+        this.kysely = kysely;
+    }
 
-     @Override
-     public String toString() {
+    @Override
+    public String toString() {
         return "Kysymys [kysymysId=" + kysymysId + ", kysymysTeksti=" + kysymysTeksti + ", kysely=" + kysely + "]";
-     }
-    
+    }
+
 }
