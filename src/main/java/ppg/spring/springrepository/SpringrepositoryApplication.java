@@ -1,6 +1,5 @@
 package ppg.spring.springrepository;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -9,9 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import ppg.spring.springrepository.domain.Kysely;
-import ppg.spring.springrepository.domain.KyselyRepository;
+import ppg.spring.springrepository.domain.SurveyRepository;
 import ppg.spring.springrepository.domain.Kysymys;
-import ppg.spring.springrepository.domain.KysymysRepository;
+import ppg.spring.springrepository.domain.QuestionRepository;
 
 @SpringBootApplication
 public class SpringrepositoryApplication {
@@ -23,10 +22,11 @@ public class SpringrepositoryApplication {
 	}
 
 	@Bean
-	public CommandLineRunner testiKyselyData(KyselyRepository kyselyRepository, KysymysRepository kysymysRepository) {
+	public CommandLineRunner testiKyselyData(SurveyRepository kyselyRepository, QuestionRepository kysymysRepository) {
 		return (args) -> {
 			log.info("Save kysely");
-			Kysely kysely1 = new Kysely("Eläintesti", "Selvitä mikä eläin olet", "28.10.2025", "29.10.2025", "30.10.2025");
+			Kysely kysely1 = new Kysely("Eläintesti", "Selvitä mikä eläin olet", "28.10.2025", "29.10.2025",
+					"30.10.2025");
 			kyselyRepository.save(kysely1);
 
 			kysely1.getKysymykset().add(new Kysymys("Oletko viekas", kysely1));
@@ -34,7 +34,6 @@ public class SpringrepositoryApplication {
 			kysely1.getKysymykset().add(new Kysymys("Oletko lempeä", kysely1));
 
 			kyselyRepository.save(kysely1);
-
 
 		};
 	}
