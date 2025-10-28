@@ -33,24 +33,24 @@
     </div>
   
     <h3>Kysymykset:</h3>
-    <table id="questionsTable">
-      <tbody>
-        <!-- Jos serveri alustaa jo 1-2 riviä, Thymeleaf voi renderöidä ne näin (valinnainen)
-         -->
-             <tr th:each="question, qStat : *{questions}">
-        <td>
-          <input type="text"
-                 class="form-control"
-                 th:field="*{questions[__${qStat.index}__].questionText}"
-                 placeholder="Kirjoita kysymys" />
-        </td>
-        <td>
-          <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
-        </td>
-      </tr>
-      
-      </tbody>
-    </table>
+    <table id="questionsTable" class="table">
+  <tbody>
+    <tr th:each="question, qStat : *{questions}">
+      <td>
+        <input type="text"
+               class="form-control"
+               th:field="*{questions[__${qStat.index}__].questionText}"
+               placeholder="Kirjoita kysymys" />
+      </td>
+      <td>
+        <a th:href="@{/deletequestion/{id}(id=${question.questionId})}"
+           class="btn btn-danger">
+          Poista
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
     <p>
       <button type="button" class="btn btn-secondary" onclick="addQuestionRow()">Lisää kysymys</button>
@@ -69,7 +69,7 @@
   </template>
   </div>
   <script>
-    // Lisää uuden tyhjän biisirivin
+    // Lisää uuden tyhjän kysynysrivin
     function addQuestionRow() {
       const tbody = document.querySelector('#questionsTable tbody');
       const idx = tbody.querySelectorAll('tr').length;

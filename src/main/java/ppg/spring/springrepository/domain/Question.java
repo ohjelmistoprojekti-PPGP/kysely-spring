@@ -31,19 +31,19 @@ public class Question {
     }
 
     // getit ja setit
-    public Long getquestionId() {
+    public Long getQuestionId() {
         return questionId;
     }
 
-    public void setquestionId(Long questionId) {
+    public void setQuestionId(Long questionId) {
         this.questionId = questionId;
     }
 
-    public String getquestionText() {
+    public String getQuestionText() {
         return questionText;
     }
 
-    public void setquestionText(String questionText) {
+    public void setQuestionText(String questionText) {
         this.questionText = questionText;
     }
 

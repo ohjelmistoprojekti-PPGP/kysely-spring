@@ -32,6 +32,7 @@ public class SurveyController {
         return "index"; // index.html
     }
 
+    // Lisää uusi kysely
     @GetMapping("/addsurvey")
     public String addSurveyForm(Model model) {
         Survey survey = new Survey();
@@ -47,28 +48,15 @@ public class SurveyController {
         return "addnewsurvey"; // addnewsurvey.html
     }
 
-    // @PostMapping("/addartist")
-    // public String saveArtist(@ModelAttribute Artist artist) {
-    // if (artist.getAlbums() != null) {
-    // for (Album album : artist.getAlbums()) {
-    // album.setArtist(artist);
-    // if (album.getSongs() != null) {
-    // List<Song> cleaned = album.getSongs().stream()
-    // .filter(s -> s.getTitle() != null && !s.getTitle().isBlank())
-    // .peek(s -> s.setAlbum(album))
-    // .collect(Collectors.toList());
-    // album.setSongs(cleaned);
-    // }
-    // }
-    // }
-    // artistRepository.save(artist);
-    // return "redirect:/musiclist";
-    // }
-
-    // @PostMapping("/savekysely")
-    // public String save(Kysely kysely) {
-    // surveyRepository.save(kysely);
-    // return "redirect:index";
-    // }
+    @PostMapping("/addsurvey")
+    public String saveSurvey(Survey survey) {
+        if (survey.getQuestions() != null) {
+            for (Question q : survey.getQuestions()) {
+                q.setSurvey(survey);
+            }
+        }
+        surveyRepository.save(survey);
+        return "redirect:index";
+    }
 
 }
