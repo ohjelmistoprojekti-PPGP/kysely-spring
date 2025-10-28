@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 
 import ppg.spring.springrepository.domain.Survey;
 import ppg.spring.springrepository.domain.SurveyRepository;
-import ppg.spring.springrepository.domain.Kysymys;
+import ppg.spring.springrepository.domain.Question;
 import ppg.spring.springrepository.domain.QuestionRepository;
 
 @SpringBootApplication
@@ -29,9 +29,9 @@ public class SpringrepositoryApplication {
 					"30.10.2025");
 			SurveyRepository.save(survey1);
 
-			survey1.getKysymykset().add(new Kysymys("Oletko viekas", survey1));
-			survey1.getKysymykset().add(new Kysymys("Oletko älykäs", survey1));
-			survey1.getKysymykset().add(new Kysymys("Oletko lempeä", survey1));
+			survey1.getKysymykset().add(new Question("Oletko viekas", survey1));
+			survey1.getKysymykset().add(new Question("Oletko älykäs", survey1));
+			survey1.getKysymykset().add(new Question("Oletko lempeä", survey1));
 
 			SurveyRepository.save(survey1);
 
