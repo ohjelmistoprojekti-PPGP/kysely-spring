@@ -25,7 +25,7 @@ public class SpringrepositoryApplication {
 	public CommandLineRunner testiKyselyData(SurveyRepository SurveyRepository, QuestionRepository QuestionRepository) {
 		return (args) -> {
 			log.info("Save kysely");
-			survey survey1 = new Survey("Eläintesti", "Selvitä mikä eläin olet", "28.10.2025", "29.10.2025",
+			Survey survey1 = new Survey("Eläintesti", "Selvitä mikä eläin olet", "28.10.2025", "29.10.2025",
 					"30.10.2025");
 			SurveyRepository.save(survey1);
 
