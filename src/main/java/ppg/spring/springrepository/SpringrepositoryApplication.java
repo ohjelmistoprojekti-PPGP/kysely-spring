@@ -22,18 +22,18 @@ public class SpringrepositoryApplication {
 	}
 
 	@Bean
-	public CommandLineRunner testiKyselyData(SurveyRepository kyselyRepository, QuestionRepository kysymysRepository) {
+	public CommandLineRunner testiKyselyData(SurveyRepository SurveyRepository, QuestionRepository QuestionRepository) {
 		return (args) -> {
 			log.info("Save kysely");
 			survey survey1 = new Survey("Eläintesti", "Selvitä mikä eläin olet", "28.10.2025", "29.10.2025",
 					"30.10.2025");
-			kyselyRepository.save(survey1);
+			SurveyRepository.save(survey1);
 
 			survey1.getKysymykset().add(new Kysymys("Oletko viekas", survey1));
 			survey1.getKysymykset().add(new Kysymys("Oletko älykäs", survey1));
 			survey1.getKysymykset().add(new Kysymys("Oletko lempeä", survey1));
 
-			kyselyRepository.save(survey1);
+			SurveyRepository.save(survey1);
 
 		};
 	}
