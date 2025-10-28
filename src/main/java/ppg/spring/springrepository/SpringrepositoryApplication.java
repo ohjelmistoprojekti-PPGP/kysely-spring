@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import ppg.spring.springrepository.domain.Kysely;
+import ppg.spring.springrepository.domain.Survey;
 import ppg.spring.springrepository.domain.SurveyRepository;
 import ppg.spring.springrepository.domain.Kysymys;
 import ppg.spring.springrepository.domain.QuestionRepository;
@@ -25,15 +25,15 @@ public class SpringrepositoryApplication {
 	public CommandLineRunner testiKyselyData(SurveyRepository kyselyRepository, QuestionRepository kysymysRepository) {
 		return (args) -> {
 			log.info("Save kysely");
-			Kysely kysely1 = new Kysely("Eläintesti", "Selvitä mikä eläin olet", "28.10.2025", "29.10.2025",
+			survey survey1 = new Survey("Eläintesti", "Selvitä mikä eläin olet", "28.10.2025", "29.10.2025",
 					"30.10.2025");
-			kyselyRepository.save(kysely1);
+			kyselyRepository.save(survey1);
 
-			kysely1.getKysymykset().add(new Kysymys("Oletko viekas", kysely1));
-			kysely1.getKysymykset().add(new Kysymys("Oletko älykäs", kysely1));
-			kysely1.getKysymykset().add(new Kysymys("Oletko lempeä", kysely1));
+			survey1.getKysymykset().add(new Kysymys("Oletko viekas", survey1));
+			survey1.getKysymykset().add(new Kysymys("Oletko älykäs", survey1));
+			survey1.getKysymykset().add(new Kysymys("Oletko lempeä", survey1));
 
-			kyselyRepository.save(kysely1);
+			kyselyRepository.save(survey1);
 
 		};
 	}
