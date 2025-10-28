@@ -28,6 +28,12 @@ public class Question {
         this.survey = survey;
     }
 
+    public Question() {
+        this.questionId = null;
+        this.questionText = null;
+        this.survey = null;
+    }
+
     // getit ja setit
     public Long getquestionId() {
         return questionId;
