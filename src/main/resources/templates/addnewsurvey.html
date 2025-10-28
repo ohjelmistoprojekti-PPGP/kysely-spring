@@ -1,10 +1,109 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add Survey</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add artist, album and songs</title>
+  <style>
+    table { border-collapse: collapse; }
+    td, th { padding: 6px 8px; }
+  </style>
 </head>
 <body>
+  <h1>Add artist, album and songs</h1>
+    <h3>Artist</h3>
+  <form id="artistForm" th:action="@{/addartist}" th:object="${artist}" method="post" onsubmit="reindexAll()">
+    <input type="hidden" th:field="*{artistId}" />
 
+    <label>Name</label>
+    <input type="text" th:field="*{name}" required/><br/>
+
+    <label>Genre</label>
+    <input type="text" th:field="*{genre}" required/><br/>
+
+    <h3>Album</h3>
+    <!-- Käytetään vain yhtä albumia lomakkeella: indeksinä 0 -->
+    <label>Title</label>
+    <input type="text" th:field="*{albums[0].title}" placeholder="Album title"/><br/>
+    <label>Year</label>
+    <input type="number" th:field="*{albums[0].releaseYear}" placeholder="Year"/><br/>
+
+    <h3>Songs</h3>
+    <table id="songsTable">
+      <thead>
+        <tr><th>Title</th><th>Duration</th><th></th></tr>
+      </thead>
+      <tbody>
+        <!-- Jos serveri alustaa jo 1-2 riviä, Thymeleaf voi renderöidä ne näin (valinnainen)
+             <tr th:each="song, sStat : *{albums[0].songs}">
+               <td><input type="text" th:field="*{albums[0].songs[__${sStat.index}__].title}"/></td>
+               <td><input type="number" step="0.01" th:field="*{albums[0].songs[__${sStat.index}__].duration}"/></td>
+               <td><button type="button" onclick="removeRow(this)">Poista</button></td>
+             </tr>
+        -->
+      </tbody>
+    </table>
+
+    <p>
+      <button type="button" onclick="addSongRow()">Add song</button>
+      <button type="submit">Save</button>
+    </p>
+  </form>
+
+  <!-- Template row (ei th:field, luodaan JS:llä) -->
+  <template id="songRowTemplate">
+    <tr>
+      <td><input type="text" name="albums[0].songs[__INDEX__].title" placeholder="Song title" /></td>
+      <td><input type="number" step="0.01" name="albums[0].songs[__INDEX__].duration" placeholder="Duration" /></td>
+      <td><button type="button" onclick="removeRow(this)">Delete</button></td>
+    </tr>
+  </template>
+
+  <script>
+    // Lisää uuden tyhjän biisirivin
+    function addSongRow() {
+      const tbody = document.querySelector('#songsTable tbody');
+      const idx = tbody.querySelectorAll('tr').length;
+      const tpl = document.querySelector('#songRowTemplate').innerHTML;
+      const html = tpl.replace(/__INDEX__/g, idx);
+      const tmp = document.createElement('tbody');
+      tmp.innerHTML = html;
+      tbody.appendChild(tmp.querySelector('tr'));
+    }
+
+    // Poistaa rivin ja jättää aukon — reindexAll korjaa indeksit ennen submitia
+    function removeRow(btn) {
+      const tr = btn.closest('tr');
+      tr.remove();
+    }
+
+    // Korjaa kaikki name-attribuutit niin että indices ovat 0..N-1 ilman aukkoja
+    function reindexAll() {
+      const tbody = document.querySelector('#songsTable tbody');
+      const rows = tbody.querySelectorAll('tr');
+      rows.forEach((tr, i) => {
+        const inputs = tr.querySelectorAll('input');
+        inputs.forEach(inp => {
+          // esimerkki name: albums[0].songs[3].title
+          const base = inp.name || inp.getAttribute('name'); // jos luotu serverillä, voi olla th:field
+          if (!base) return;
+          // Poista vanha indeksi ja aseta uusi
+          const newName = base.replace(/albums\[0\]\.songs\[\d+\]/, `albums[0].songs[${i}]`);
+          inp.name = newName;
+        });
+      });
+
+      // lisäksi jos olet lisännyt th:field-rivejä suoraan Thymeleafillä,
+      // nämä ovat valmiiksi sidottuja eikä niillä välttämättä ole name-atribuutteja.
+      // Reindex ei koske niitä — siksi on helpointa käyttää joko pelkästään
+      // JS-luotuja rivejä tai alustaa lomake serverillä tyhjillä riveillä.
+    }
+
+    // Lisää aluksi yksi rivi, jos ei yhtään
+    document.addEventListener('DOMContentLoaded', function () {
+      const tbody = document.querySelector('#songsTable tbody');
+      if (tbody.querySelectorAll('tr').length === 0) addSongRow();
+    });
+  </script>
 </body>
 </html>
