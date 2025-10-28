@@ -19,7 +19,7 @@ public class Survey {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long surveyId;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "kysely")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey")
     @JsonIgnore
 
     private List<Question> questions = new ArrayList<>();

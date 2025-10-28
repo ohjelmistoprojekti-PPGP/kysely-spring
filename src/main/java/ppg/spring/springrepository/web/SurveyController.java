@@ -42,29 +42,28 @@ public class SurveyController {
         survey.setEndingDate("");
         survey.setQuestions(new ArrayList<>());
         survey.getQuestions().add(new Question());
-        survey.getQuestions().add(new Question());
 
         model.addAttribute("survey", survey);
-        return "addnewsurvey";
+        return "addnewsurvey"; // addnewsurvey.html
     }
 
-//     @PostMapping("/addartist")
-//public String saveArtist(@ModelAttribute Artist artist) {
-//    if (artist.getAlbums() != null) {
-//        for (Album album : artist.getAlbums()) {
-//            album.setArtist(artist);
-//            if (album.getSongs() != null) {
-//                List<Song> cleaned = album.getSongs().stream()
-//                    .filter(s -> s.getTitle() != null && !s.getTitle().isBlank())
-//                    .peek(s -> s.setAlbum(album))
-//                    .collect(Collectors.toList());
-//                album.setSongs(cleaned);
-//            }
-//        }
-//    }
-//    artistRepository.save(artist);
-//    return "redirect:/musiclist";
-//}
+    // @PostMapping("/addartist")
+    // public String saveArtist(@ModelAttribute Artist artist) {
+    // if (artist.getAlbums() != null) {
+    // for (Album album : artist.getAlbums()) {
+    // album.setArtist(artist);
+    // if (album.getSongs() != null) {
+    // List<Song> cleaned = album.getSongs().stream()
+    // .filter(s -> s.getTitle() != null && !s.getTitle().isBlank())
+    // .peek(s -> s.setAlbum(album))
+    // .collect(Collectors.toList());
+    // album.setSongs(cleaned);
+    // }
+    // }
+    // }
+    // artistRepository.save(artist);
+    // return "redirect:/musiclist";
+    // }
 
     // @PostMapping("/savekysely")
     // public String save(Kysely kysely) {

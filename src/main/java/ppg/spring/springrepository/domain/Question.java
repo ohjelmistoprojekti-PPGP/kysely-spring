@@ -18,7 +18,7 @@ public class Question {
     private String questionText;
 
     @ManyToOne
-    @JoinColumn(name = "questionId")
+    @JoinColumn(name = "surveyId")
     private Survey survey;
 
     // konstruktorit
