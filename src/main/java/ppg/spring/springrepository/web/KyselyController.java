@@ -1,5 +1,7 @@
 package ppg.spring.springrepository.web;
 
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +29,21 @@ public class KyselyController {
         return "index"; // index.html
     }
 
-    @RequestMapping("/addkysely")
-    public String addBook(Model model) {
-        model.addAttribute("kysely", new Kysely());
-        // model.addAttribute("kysymykset", kysymysRepository.findAll());
-        return "addnewkysely"; // addnewkysely.html
-    }
+     @GetMapping("/addkysely")
+public String showAddArtistForm(Model model) {
+    Artist artist = new Artist();
+    Album album = new Album();
+    album.setTitle("");
+    album.setReleaseYear(0);
+    album.setSongs(new ArrayList<>());
+    album.getSongs().add(new Song());
+    album.getSongs().add(new Song());
+    artist.setAlbums(new ArrayList<>());
+    artist.getAlbums().add(album);
+
+    model.addAttribute("artist", artist);
+    return "addartist";
+}
 
     @PostMapping("/savekysely")
     public String save(Kysely kysely) {
