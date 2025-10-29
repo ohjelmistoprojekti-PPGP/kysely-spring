@@ -6,34 +6,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <title>Muokkaa kyselyä</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            padding: 6px 8px;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Muokkaa kyselyä</h1>
-    <form th:action="@{/editsurvey/{id}(id=${survey.surveyId})}" th:object="${survey}" method="post">
-        <div class="mb-3">
-            <label for="surveyName" class="form-label">Nimi:</label>
-            <input type="text" id="surveyName" th:field="*{surveyName}" class="form-control" />
-        </div>
+    <div class="container mt-4">
+        <h1>Muokkaa kyselyä</h1>
+        <form th:action="@{/editsurvey/{id}(id=${survey.surveyId})}" th:object="${survey}" method="post"
+            onsubmit="reindexAll()">
+            <div class="mb-3">
+                <label for="surveyName" class="form-label">Nimi:</label>
+                <input type="text" id="surveyName" th:field="*{surveyName}" class="form-control" required />
+            </div>
 
-        <div class="mb-3">
-            <label for="surveyDesc" class="form-label">Kuvaus:</label>
-            <textarea id="surveyDesc" th:field="*{surveyDesc}" class="form-control"></textarea>
-        </div>
+            <div class="mb-3">
+                <label for="surveyDesc" class="form-label">Kuvaus:</label>
+                <textarea id="surveyDesc" th:field="*{surveyDesc}" class="form-control" required></textarea>
+            </div>
 
-        <div class="mb-3">
-            <label for="startingDate" class="form-label">Aloituspv,:</label>
-            <input type="text" id="startingDate" th:field="*{startingDate}" class="form-control" />
-        </div>
+            <div class="mb-3">
+                <label for="startingDate" class="form-label">Aloituspäivä:</label>
+                <input type="date" id="startingDate" th:field="*{startingDate}" class="form-control" required />
+            </div>
 
-        <div class="mb-3">
-            <label for="endingDate" class="form-label">Lopetuspvm:</label>
-            <input type="text" id="endingDate" th:field="*{endingDate}" class="form-control" />
-        </div>
+            <div class="mb-3">
+                <label for="endingDate" class="form-label">Lopetuspäivä:</label>
+                <input type="date" id="endingDate" th:field="*{endingDate}" class="form-control" required />
+            </div>
 
-        <button type="submit" class="btn btn-primary">Tallenna</button>
-        <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" class="btn btn-secondary ms-2">Peruuta</a>
-    </form>
+            <h3>Kysymykset:</h3>
+            <table id="questionsTable" class="table">
+                <tbody>
+                    <tr th:each="question, qStat : *{questions}">
+                        <td>
+                            <input type="text" class="form-control"
+                                th:field="*{questions[__${qStat.index}__].questionText}"
+                                placeholder="Kirjoita kysymys" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                <button type="button" class="btn btn-secondary" onclick="addQuestionRow()">Lisää kysymys</button>
+            </p>
+
+            <p>
+                <button type="submit" class="btn btn-success">Tallenna</button>
+                <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" class="btn btn-secondary ms-2">Peruuta</a>
+            </p>
+        </form>
+
+        <!-- Template row (JS will clone this) -->
+        <template id="questionRowTemplate">
+            <tr>
+                <td>
+                    <input type="text" class="form-control" name="questions[__INDEX__].questionText"
+                        placeholder="Kirjoita kysymys" />
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
+                </td>
+            </tr>
+        </template>
+    </div>
+
+    <script>
+        // Lisää uusi kysymysrivi
+        function addQuestionRow() {
+            const tbody = document.querySelector('#questionsTable tbody');
+            const idx = tbody.querySelectorAll('tr').length;
+            const tpl = document.querySelector('#questionRowTemplate').innerHTML;
+            const html = tpl.replace(/__INDEX__/g, idx);
+            const tmp = document.createElement('tbody');
+            tmp.innerHTML = html;
+            tbody.appendChild(tmp.querySelector('tr'));
+        }
+
+        // Poistaa rivin
+        function removeRow(btn) {
+            const tr = btn.closest('tr');
+            tr.remove();
+        }
+
+        // Korjaa indeksoinnin ennen submit
+        function reindexAll() {
+            const tbody = document.querySelector('#questionsTable tbody');
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach((tr, i) => {
+                const inputs = tr.querySelectorAll('input');
+                inputs.forEach(inp => {
+                    const base = inp.getAttribute('name');
+                    if (!base) return;
+                    const newName = base.replace(/questions\[\d+\]/, `questions[${i}]`);
+                    inp.name = newName;
+                });
+            });
+        }
+
+        // Alusta vähintään yksi rivi, jos tyhjä
+        document.addEventListener('DOMContentLoaded', function () {
+            const tbody = document.querySelector('#questionsTable tbody');
+            if (tbody.querySelectorAll('tr').length === 0) addQuestionRow();
+        });
+    </script>
 </body>
 
 </html>

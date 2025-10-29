@@ -94,9 +94,20 @@ public class SurveyController {
         survey.setStartingDate(updatedSurvey.getStartingDate());
         survey.setEndingDate(updatedSurvey.getEndingDate());
 
-        // For now, we’ll skip editing questions (to be added later)
+        // Handle questions
+        if (updatedSurvey.getQuestions() != null) {
+            // Remove any questions that were deleted in the form
+            survey.getQuestions().clear();
+
+            // Re-add all questions from the form
+            for (Question q : updatedSurvey.getQuestions()) {
+                q.setSurvey(survey);
+                survey.getQuestions().add(q);
+            }
+        }
+
         surveyRepository.save(survey);
 
-        return "redirect:/viewsurvey?id=" + id;
+        return "redirect:/viewsurvey/" + id;
     }
 }
