@@ -17,8 +17,8 @@
         <li class="list-group-item" th:each="q : ${survey.questions}" th:text="${q.questionText}"></li>
     </ul>
 
-    <a href="/index" class="btn btn-secondary">Back to all surveys</a>
-    <a th:href="@{/editsurvey/{id}(id=${survey.id})}" class="btn btn-primary">Edit survey</a>
+    <a href="/index" class="btn btn-secondary">Takaisin</a>
+    <a th:href="@{/editsurvey/{id}(id=${survey.surveyId})}" class="btn btn-primary">Muokkaa kyselyä</a>
 </body>
 
 </html>

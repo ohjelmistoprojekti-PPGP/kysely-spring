@@ -12,7 +12,7 @@
     <h1>Kyselyt</h1>
     <ul>
         <li th:each="survey : ${surveys}">
-            <a th:href="@{/viewsurvey(id=${survey.surveyId})}" th:text="${survey.surveyName}"></a>
+            <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" th:text="${survey.surveyName}"></a>
             <span> — </span>
             <span th:text="${survey.surveyDesc}"></span>
             <a th:href="@{/editsurvey/{id}(id=${survey.surveyId})}"

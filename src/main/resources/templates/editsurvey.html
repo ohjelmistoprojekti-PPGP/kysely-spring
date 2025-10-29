@@ -1,14 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <title>Muokkaa kyselyä</title>
 </head>
 
 <body>
+    <h1>Muokkaa kyselyä</h1>
+    <form th:action="@{/editsurvey/{id}(id=${survey.surveyId})}" th:object="${survey}" method="post">
+        <div class="mb-3">
+            <label for="surveyName" class="form-label">Nimi:</label>
+            <input type="text" id="surveyName" th:field="*{surveyName}" class="form-control" />
+        </div>
 
+        <div class="mb-3">
+            <label for="surveyDesc" class="form-label">Kuvaus:</label>
+            <textarea id="surveyDesc" th:field="*{surveyDesc}" class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="startingDate" class="form-label">Aloituspv,:</label>
+            <input type="text" id="startingDate" th:field="*{startingDate}" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label for="endingDate" class="form-label">Lopetuspvm:</label>
+            <input type="text" id="endingDate" th:field="*{endingDate}" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Tallenna</button>
+        <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" class="btn btn-secondary ms-2">Peruuta</a>
+    </form>
 </body>
 
 </html>
