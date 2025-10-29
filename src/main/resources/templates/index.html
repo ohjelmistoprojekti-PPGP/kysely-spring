@@ -9,10 +9,17 @@
 </head>
 
 <body>
-<h1> Surveys</h1>
-<a href="/addsurvey" class="btn btn-success">Lisää Kysely</a>
-
-
+    <h1> Kyselyt</h1>
+    <ul>
+        <li th:each="survey : ${surveys}">
+            <a th:href="@{/viewsurvey(id=${survey.surveyId})}" th:text="${survey.surveyName}"></a>
+            <span> — </span>
+            <span th:text="${survey.surveyDesc}"></span>
+            <a th:href="@{/editsurvey/{id}(id=${survey.surveyId})}"
+                class="btn btn-sm btn-outline-primary ms-2">Muokkaa</a>
+        </li>
+    </ul>
+    <a href="/addsurvey" class="btn btn-success">Uusi Kysely</a>
 </body>
 
 </html>

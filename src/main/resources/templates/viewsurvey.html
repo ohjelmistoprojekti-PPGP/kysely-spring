@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <title th:text="${survey.surveyName}">Survey</title>
+</head>
+
+<body class="container mt-4">
+    <h1 th:text="${survey.surveyName}">Survey Title</h1>
+    <p th:text="${survey.surveyDesc}">Survey description goes here.</p>
+
+    <h3>Questions</h3>
+    <ul class="list-group mb-3">
+        <li class="list-group-item" th:each="q : ${survey.questions}" th:text="${q.questionText}"></li>
+    </ul>
+
+    <a href="/index" class="btn btn-secondary">Back to all surveys</a>
+    <a th:href="@{/editsurvey/{id}(id=${survey.id})}" class="btn btn-primary">Edit survey</a>
+</body>
+
+</html>

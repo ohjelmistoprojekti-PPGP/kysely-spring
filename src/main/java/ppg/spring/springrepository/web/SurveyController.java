@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ppg.spring.springrepository.domain.Survey;
 import ppg.spring.springrepository.domain.SurveyRepository;
@@ -29,6 +30,7 @@ public class SurveyController {
     // Get request index
     @GetMapping("/index")
     public String getKyselyt(Model model) {
+        model.addAttribute("surveys", surveyRepository.findAll());
         return "index"; // index.html
     }
 
@@ -56,7 +58,18 @@ public class SurveyController {
             }
         }
         surveyRepository.save(survey);
-        return "redirect:index";
+        return "redirect:/index";
+    }
+
+    // Näytä tietty kysely
+    @GetMapping("/viewsurvey")
+    public String viewsurvey(@RequestParam("id") Long id, Model model) {
+        Survey survey = surveyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID " + id));
+        model.addAttribute("survey", survey);
+        model.addAttribute("questions", survey.getQuestions());
+        return "viewsurvey"; // viewsurvey.html
+
     }
 
 }
