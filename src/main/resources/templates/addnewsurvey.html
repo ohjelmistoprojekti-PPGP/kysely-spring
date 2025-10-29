@@ -1,72 +1,78 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
-    <title>Add Survey</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+  <title>Uusi kysely</title>
   <style>
-    table { border-collapse: collapse; }
-    td, th { padding: 6px 8px; }
+    table {
+      border-collapse: collapse;
+    }
+
+    td,
+    th {
+      padding: 6px 8px;
+    }
   </style>
 </head>
+
 <body>
   <div class="container mt-5">
-      <div class="card shadow-sm p-4">
-  <h1>Lisää kysely</h1>
-  <form th:action="@{/addsurvey}" th:object="${survey}" method="post" onsubmit="reindexAll()">
-    <div class="mb-3">
-    <label for="surveyName" class="form-label">Nimi:</label>
-    <input type="text" class="form-control" id="surveyName" th:field="*{surveyName}" required/><br/>
-    </div>
-    <div class="mb-3">
-    <label for="surveyDesc" class="form-label">Kuvaus:</label>
-    <input type="text" class="form-control" id="surveyDesc" th:field="*{surveyDesc}" required/><br/>
-    </div>
-    <div class="mb-3">
-    <label for="startingDate" class="form-label">Aloituspäivä:</label>
-    <input type="date" class="form-control" id="startingDate" th:field="*{startingDate}" required/><br/>
-    </div>
-    <div class="mb-3">
-    <label for="endingDate" class="form-label">Lopetuspäivä:</label>
-    <input type="date" class="form-control" id="endingDate" th:field="*{endingDate}" required/><br/>
-    </div>
-  
-    <h3>Kysymykset:</h3>
-    <table id="questionsTable" class="table">
-  <tbody>
-    <tr th:each="question, qStat : *{questions}">
-      <td>
-        <input type="text"
-               class="form-control"
-               th:field="*{questions[__${qStat.index}__].questionText}"
-               placeholder="Kirjoita kysymys" />
-      </td>
-      <td>
-        <a th:href="@{/deletequestion/{id}(id=${question.questionId})}"
-           class="btn btn-danger">
-          Poista
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <div class="card shadow-sm p-4">
+      <h1>Lisää kysely</h1>
+      <form th:action="@{/addsurvey}" th:object="${survey}" method="post" onsubmit="reindexAll()">
+        <div class="mb-3">
+          <label for="surveyName" class="form-label">Nimi:</label>
+          <input type="text" class="form-control" id="surveyName" th:field="*{surveyName}" required /><br />
+        </div>
+        <div class="mb-3">
+          <label for="surveyDesc" class="form-label">Kuvaus:</label>
+          <input type="text" class="form-control" id="surveyDesc" th:field="*{surveyDesc}" required /><br />
+        </div>
+        <div class="mb-3">
+          <label for="startingDate" class="form-label">Aloituspäivä:</label>
+          <input type="date" class="form-control" id="startingDate" th:field="*{startingDate}" required /><br />
+        </div>
+        <div class="mb-3">
+          <label for="endingDate" class="form-label">Lopetuspäivä:</label>
+          <input type="date" class="form-control" id="endingDate" th:field="*{endingDate}" required /><br />
+        </div>
 
-    <p>
-      <button type="button" class="btn btn-secondary" onclick="addQuestionRow()">Lisää kysymys</button>
-    </p>
-    <p>
-      <input type="submit" value="Tallenna" class="btn btn-success"></input>
-    </p>
-  </form>
-  </div>
-  <!-- Template row (ei th:field, luodaan JS:llä) -->
-  <template id="questionRowTemplate">
-    <tr>
-      <td><input type="text" class="form-control" name="questions[__INDEX__].questionText" placeholder="Kirjoita kysymys" /></td>
-      <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button></td>
-    </tr>
-  </template>
+        <h3>Kysymykset:</h3>
+        <table id="questionsTable" class="table">
+          <tbody>
+            <tr th:each="question, qStat : *{questions}">
+              <td>
+                <input type="text" class="form-control" th:field="*{questions[__${qStat.index}__].questionText}"
+                  placeholder="Kirjoita kysymys" />
+              </td>
+              <td>
+                <a th:href="@{/deletequestion/{id}(id=${question.questionId})}" class="btn btn-danger">
+                  Poista
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          <button type="button" class="btn btn-secondary" onclick="addQuestionRow()">Lisää kysymys</button>
+        </p>
+        <p>
+          <input type="submit" value="Tallenna" class="btn btn-success"></input>
+        </p>
+      </form>
+    </div>
+    <!-- Template row (ei th:field, luodaan JS:llä) -->
+    <template id="questionRowTemplate">
+      <tr>
+        <td><input type="text" class="form-control" name="questions[__INDEX__].questionText"
+            placeholder="Kirjoita kysymys" /></td>
+        <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button></td>
+      </tr>
+    </template>
   </div>
   <script>
     // Lisää uuden tyhjän kysynysrivin
@@ -115,4 +121,5 @@
     });
   </script>
 </body>
+
 </html>

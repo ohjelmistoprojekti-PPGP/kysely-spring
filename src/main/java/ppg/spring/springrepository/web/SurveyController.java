@@ -28,6 +28,7 @@ public class SurveyController {
     }
 
     // Get request index
+    // Shows all surveys
     @GetMapping("/index")
     public String getKyselyt(Model model) {
         model.addAttribute("surveys", surveyRepository.findAll());
