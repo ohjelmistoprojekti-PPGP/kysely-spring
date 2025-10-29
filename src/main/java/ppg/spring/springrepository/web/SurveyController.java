@@ -34,7 +34,7 @@ public class SurveyController {
         return "index"; // index.html
     }
 
-    // Lisää uusi kysely
+    // Add a new survey
     @GetMapping("/addsurvey")
     public String addSurveyForm(Model model) {
         Survey survey = new Survey();
@@ -61,7 +61,7 @@ public class SurveyController {
         return "redirect:/index";
     }
 
-    // Näytä tietty kysely
+    // Show a specific survey
     @GetMapping("/viewsurvey")
     public String viewsurvey(@RequestParam("id") Long id, Model model) {
         Survey survey = surveyRepository.findById(id)

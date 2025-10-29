@@ -14,14 +14,14 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
 
-    // attribuutit
+    // attributes
     private String questionText;
 
     @ManyToOne
     @JoinColumn(name = "surveyId")
     private Survey survey;
 
-    // konstruktorit
+    // constructors
     public Question(String questionText, Survey survey) {
         this.questionText = questionText;
         this.survey = survey;
@@ -30,7 +30,7 @@ public class Question {
     public Question() {
     }
 
-    // getit ja setit
+    // getters and setters, toString
     public Long getQuestionId() {
         return questionId;
     }

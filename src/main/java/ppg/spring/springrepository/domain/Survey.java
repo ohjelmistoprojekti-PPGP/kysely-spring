@@ -24,7 +24,7 @@ public class Survey {
 
     private List<Question> questions = new ArrayList<>();
 
-    // attribuutit
+    // attributes
 
     private String surveyName;
     private String surveyDesc;
@@ -32,7 +32,7 @@ public class Survey {
     private String startingDate;
     private String endingDate;
 
-    // konstruktorit
+    // constructors
     public Survey(String surveyName, String surveyDesc, String createdDate, String startingDate,
             String endingDate) {
         this.surveyName = surveyName;
@@ -50,6 +50,7 @@ public class Survey {
         this.endingDate = null;
     }
 
+    // getters and setters, toString
     public Long getSurveyId() {
         return surveyId;
     }

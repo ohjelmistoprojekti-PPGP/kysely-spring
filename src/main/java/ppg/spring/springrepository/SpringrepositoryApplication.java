@@ -23,6 +23,7 @@ public class SpringrepositoryApplication {
 
 	@Bean
 	public CommandLineRunner SurveyTestData(SurveyRepository SurveyRepository, QuestionRepository QuestionRepository) {
+		// Default survey
 		return (args) -> {
 			log.info("Save survey");
 			Survey survey1 = new Survey("Eläintesti", "Selvitä mikä eläin olet", "28.10.2025", "29.10.2025",
