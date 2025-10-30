@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <div style="margin: 20px;">
     <h1>Kyselyt</h1>
     <ul class="list-unstyled">
         <li th:each="survey : ${surveys}">
@@ -20,6 +21,7 @@
         </li>
     </ul>
     <a href="/addsurvey" class="btn btn-primary">Uusi Kysely</a>
+    </div>
 </body>
 
 </html>
