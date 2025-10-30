@@ -93,7 +93,6 @@
       rows.forEach((tr, i) => {
         const inputs = tr.querySelectorAll('input');
         inputs.forEach(inp => {
-          // esimerkki name: albums[0].songs[3].title
           const base = inp.name || inp.getAttribute('surveyName'); // jos luotu serverillä, voi olla th:field
           if (!base) return;
           // Poista vanha indeksi ja aseta uusi
@@ -101,11 +100,6 @@
           inp.name = newName;
         });
       });
-
-      // lisäksi jos olet lisännyt th:field-rivejä suoraan Thymeleafillä,
-      // nämä ovat valmiiksi sidottuja eikä niillä välttämättä ole name-atribuutteja.
-      // Reindex ei koske niitä — siksi on helpointa käyttää joko pelkästään
-      // JS-luotuja rivejä tai alustaa lomake serverillä tyhjillä riveillä.
     }
 
     // Lisää aluksi yksi rivi, jos ei yhtään
