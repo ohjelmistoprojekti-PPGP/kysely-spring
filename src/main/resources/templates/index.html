@@ -10,7 +10,7 @@
 
 <body>
     <h1>Kyselyt</h1>
-    <ul>
+    <ul class="list-unstyled">
         <li th:each="survey : ${surveys}">
             <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" th:text="${survey.surveyName}"></a>
             <span> — </span>
