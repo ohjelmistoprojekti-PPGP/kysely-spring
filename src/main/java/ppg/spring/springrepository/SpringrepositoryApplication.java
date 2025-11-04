@@ -29,7 +29,7 @@ public class SpringrepositoryApplication {
 			Survey survey1 = new Survey("Eläintesti", "Selvitä mikä eläin olet", "28.10.2025", "29.10.2025",
 					"30.10.2025");
 			SurveyRepository.save(survey1);
-
+			
 			survey1.getQuestions().add(new Question("Oletko viekas", survey1));
 			survey1.getQuestions().add(new Question("Oletko älykäs", survey1));
 			survey1.getQuestions().add(new Question("Oletko lempeä", survey1));

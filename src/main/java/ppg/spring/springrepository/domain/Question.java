@@ -36,16 +36,15 @@ public class Question {
 
     // constructors
 
-    public Question(String questionText, Survey survey, List<Response> responses) {
+    public Question(String questionText, Survey survey) {
         this.questionText = questionText;
         this.survey = survey;
-        this.responses = responses;
         
     }
 
     public Question() {
     }
-    
+
 
     //gets & sets
 
