@@ -1,5 +1,6 @@
 package ppg.spring.springrepository.domain;
 
-public interface ResponseRepository {
+import org.springframework.data.repository.CrudRepository;
 
+public interface ResponseRepository extends CrudRepository<Response, Long> {
 }
