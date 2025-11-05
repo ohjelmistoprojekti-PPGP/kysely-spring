@@ -33,20 +33,18 @@ public class Question {
 
     private List<Response> responses = new ArrayList<>();
 
-
     // constructors
 
     public Question(String questionText, Survey survey) {
         this.questionText = questionText;
         this.survey = survey;
-        
+
     }
 
     public Question() {
     }
 
-
-    //gets & sets
+    // gets & sets
 
     public Long getQuestionId() {
         return questionId;
