@@ -1,6 +1,7 @@
 package ppg.spring.springrepository.web;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -86,48 +87,53 @@ public class SurveyController {
         Survey existingSurvey = surveyRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
 
-        // Update the fields
+        // Päivitä peruskentät
         existingSurvey.setSurveyName(updatedSurvey.getSurveyName());
         existingSurvey.setSurveyDesc(updatedSurvey.getSurveyDesc());
         existingSurvey.setStartingDate(updatedSurvey.getStartingDate());
         existingSurvey.setEndingDate(updatedSurvey.getEndingDate());
 
-        if (updatedSurvey.getQuestions() != null) {
-            for (Question updatedQuestion : updatedSurvey.getQuestions()) {
-                if (updatedQuestion.getQuestionText() == null || updatedQuestion.getQuestionText().isBlank()) {
-                    continue;
-                }
-
-                if (updatedQuestion.getQuestionId() != null) {
-
-                    // Update existing question
-                    Question existingQuestion = existingSurvey.getQuestions().stream()
-                            .filter(q -> q.getQuestionId().equals(updatedQuestion.getQuestionId()))
-                            .findFirst()
-                            .orElse(null);
-
-                    if (existingQuestion != null) {
-                        existingQuestion.setQuestionText(updatedQuestion.getQuestionText());
-
-                    } else {
-                        // ID not found => add as new
-                        updatedQuestion.setSurvey(existingSurvey);
-                        existingSurvey.getQuestions().add(updatedQuestion);
-                    }
-                } else {
-                    // New question
-                    updatedQuestion.setSurvey(existingSurvey);
-                    existingSurvey.getQuestions().add(updatedQuestion);
-                }
-            }
-
-            // Remove nonexistent questions from the form
-            existingSurvey.getQuestions().removeIf(existing -> updatedSurvey.getQuestions().stream()
-                    .noneMatch(updated -> existing.getQuestionId() != null &&
-                            existing.getQuestionId().equals(updated.getQuestionId())));
+        // Varmistetaan, että kysymyslista ei ole null
+        if (existingSurvey.getQuestions() == null) {
+            existingSurvey.setQuestions(new ArrayList<>());
         }
 
+        // Luo uusi lista päivitettyjä kysymyksiä varten
+        List<Question> newQuestions = new ArrayList<>();
+
+        if (updatedSurvey.getQuestions() != null) {
+            for (Question q : updatedSurvey.getQuestions()) {
+                if (q.getQuestionText() != null && !q.getQuestionText().trim().isEmpty()) {
+
+                    // Jos olemassa oleva ID, päivitetään olemassa oleva kysymys
+                    if (q.getQuestionId() != null) {
+                        Question existing = existingSurvey.getQuestions().stream()
+                                .filter(x -> x.getQuestionId().equals(q.getQuestionId()))
+                                .findFirst()
+                                .orElse(null);
+
+                        if (existing != null) {
+                            existing.setQuestionText(q.getQuestionText());
+                            newQuestions.add(existing);
+                        } else {
+                            // Jos ei löydy, lisätään uutena
+                            q.setSurvey(existingSurvey);
+                            newQuestions.add(q);
+                        }
+                    } else {
+                        // Uusi kysymys
+                        q.setSurvey(existingSurvey);
+                        newQuestions.add(q);
+                    }
+                }
+            }
+        }
+
+        // Korvataan vanha lista uudella (turvallisesti)
+        existingSurvey.setQuestions(newQuestions);
+
         surveyRepository.save(existingSurvey);
+
         return "redirect:/viewsurvey/" + id;
     }
 }
