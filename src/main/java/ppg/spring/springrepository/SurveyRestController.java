@@ -2,6 +2,7 @@ package ppg.spring.springrepository.web;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,15 +21,14 @@ import ppg.spring.springrepository.domain.SurveyRepository;
 @RequestMapping("/api")
 public class SurveyRestController {
 
+    @Autowired
     private SurveyRepository surveyRepository;
-    private QuestionRepository questionRepository;
-    private ResponseRepository responseRepository;
 
-    public SurveyRestController (SurveyRepository surveyRepository, QuestionRepository questionRepository, ResponseRepository responseRepository) {
-        this.surveyRepository = surveyRepository;
-        this. questionRepository = questionRepository;
-        this. responseRepository = responseRepository;
-    }
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    private ResponseRepository responseRepository;
 
     // Kaikki kyselyt
     @GetMapping("/surveys")
