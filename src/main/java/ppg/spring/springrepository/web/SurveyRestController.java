@@ -26,8 +26,8 @@ public class SurveyRestController {
 
     public SurveyRestController (SurveyRepository surveyRepository, QuestionRepository questionRepository, ResponseRepository responseRepository) {
         this.surveyRepository = surveyRepository;
-        this. questionRepository = questionRepository;
-        this. responseRepository = responseRepository;
+        this.questionRepository = questionRepository;
+        this.responseRepository = responseRepository;
     }
 
     // Kaikki kyselyt

@@ -28,7 +28,7 @@ public class Question {
     @JoinColumn(name = "surveyId")
     private Survey survey;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "response")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
     @JsonIgnore
 
     private List<Response> responses = new ArrayList<>();
