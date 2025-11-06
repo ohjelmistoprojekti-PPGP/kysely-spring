@@ -23,9 +23,7 @@ import ppg.spring.springrepository.domain.SurveyRepository;
 public class SurveyRestController {
 
     private SurveyRepository surveyRepository;
-
     private QuestionRepository questionRepository;
-
     private ResponseRepository responseRepository;
 
     public SurveyRestController(SurveyRepository surveyRepository, QuestionRepository questionRepository,
