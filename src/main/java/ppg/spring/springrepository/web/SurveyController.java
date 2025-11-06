@@ -76,35 +76,58 @@ public class SurveyController {
     public String editSurvey(@PathVariable("id") Long id, Model model) {
         Survey survey = surveyRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
+        survey.getQuestions().size();
         model.addAttribute("survey", survey);
         return "editsurvey"; // TO-DO: editsurvey.html
     }
 
     @PostMapping("/editsurvey/{id}")
     public String saveEditedSurvey(@PathVariable("id") Long id, @ModelAttribute Survey updatedSurvey) {
-        Survey survey = surveyRepository.findById(id)
+        Survey existingSurvey = surveyRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
 
-        // Update the survey fields
-        survey.setSurveyName(updatedSurvey.getSurveyName());
-        survey.setSurveyDesc(updatedSurvey.getSurveyDesc());
-        survey.setStartingDate(updatedSurvey.getStartingDate());
-        survey.setEndingDate(updatedSurvey.getEndingDate());
+        // Update the fields
+        existingSurvey.setSurveyName(updatedSurvey.getSurveyName());
+        existingSurvey.setSurveyDesc(updatedSurvey.getSurveyDesc());
+        existingSurvey.setStartingDate(updatedSurvey.getStartingDate());
+        existingSurvey.setEndingDate(updatedSurvey.getEndingDate());
 
-        // Handle questions
         if (updatedSurvey.getQuestions() != null) {
-            // Remove any questions that were deleted in the form
-            survey.getQuestions().clear();
+            for (Question updatedQuestion : updatedSurvey.getQuestions()) {
+                if (updatedQuestion.getQuestionText() == null || updatedQuestion.getQuestionText().isBlank()) {
+                    continue;
+                }
 
-            // Re-add all questions from the form
-            for (Question q : updatedSurvey.getQuestions()) {
-                q.setSurvey(survey);
-                survey.getQuestions().add(q);
+                if (updatedQuestion.getQuestionId() != null) {
+
+                    // Update existing question
+                    Question existingQuestion = existingSurvey.getQuestions().stream()
+                            .filter(q -> q.getQuestionId().equals(updatedQuestion.getQuestionId()))
+                            .findFirst()
+                            .orElse(null);
+
+                    if (existingQuestion != null) {
+                        existingQuestion.setQuestionText(updatedQuestion.getQuestionText());
+
+                    } else {
+                        // ID not found => add as new
+                        updatedQuestion.setSurvey(existingSurvey);
+                        existingSurvey.getQuestions().add(updatedQuestion);
+                    }
+                } else {
+                    // New question
+                    updatedQuestion.setSurvey(existingSurvey);
+                    existingSurvey.getQuestions().add(updatedQuestion);
+                }
             }
+
+            // Remove nonexistent questions from the form
+            existingSurvey.getQuestions().removeIf(existing -> updatedSurvey.getQuestions().stream()
+                    .noneMatch(updated -> existing.getQuestionId() != null &&
+                            existing.getQuestionId().equals(updated.getQuestionId())));
         }
 
-        surveyRepository.save(survey);
-
+        surveyRepository.save(existingSurvey);
         return "redirect:/viewsurvey/" + id;
     }
 }

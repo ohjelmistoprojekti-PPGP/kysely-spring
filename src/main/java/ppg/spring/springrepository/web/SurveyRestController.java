@@ -21,10 +21,13 @@ import ppg.spring.springrepository.domain.SurveyRepository;
 public class SurveyRestController {
 
     private SurveyRepository surveyRepository;
+
     private QuestionRepository questionRepository;
+
     private ResponseRepository responseRepository;
 
-    public SurveyRestController (SurveyRepository surveyRepository, QuestionRepository questionRepository, ResponseRepository responseRepository) {
+    public SurveyRestController(SurveyRepository surveyRepository, QuestionRepository questionRepository,
+            ResponseRepository responseRepository) {
         this.surveyRepository = surveyRepository;
         this.questionRepository = questionRepository;
         this.responseRepository = responseRepository;
@@ -33,22 +36,22 @@ public class SurveyRestController {
     // Kaikki kyselyt
     @GetMapping("/surveys")
     public List<Survey> getAllSurveys() {
-	return (List<Survey>) surveyRepository.findAll();
+        return (List<Survey>) surveyRepository.findAll();
     }
 
     // Yksittäinen kysely
     @GetMapping("/surveys/{id}")
     public Survey getSurveyById(@PathVariable Long id) {
-    return surveyRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Survey not found: " + id));
+        return surveyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Survey not found: " + id));
     }
 
-    //Näyttää tietyn kyselyn kysymykset (V7- "vastaaja voi katsoa kyselyn")
+    // Näyttää tietyn kyselyn kysymykset (V7- "vastaaja voi katsoa kyselyn")
     @GetMapping("/surveys/{id}/questions")
     public List<Question> getQuestionsBySurvey(@PathVariable Long id) {
-    Survey survey = surveyRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Survey not found"));
-    return survey.getQuestions();
+        Survey survey = surveyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Survey not found"));
+        return survey.getQuestions();
     }
 
     // Tallentaa vastaukset tiettyyn kyselyyn
@@ -56,11 +59,6 @@ public class SurveyRestController {
     public String saveResponses(@PathVariable Long id, @RequestBody List<Response> responses) {
         responseRepository.saveAll(responses);
         return "Vastaukset tallennettu!";
-        }
-
     }
 
-
-
-
-
+}

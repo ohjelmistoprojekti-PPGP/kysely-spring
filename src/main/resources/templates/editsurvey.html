@@ -46,11 +46,12 @@
             <h3>Kysymykset:</h3>
             <table id="questionsTable" class="table">
                 <tbody>
+                    <!-- Olemassa olevat kysymykset -->
                     <tr th:each="question, qStat : *{questions}">
                         <td>
-                            <input type="text" class="form-control"
-                                th:field="*{questions[__${qStat.index}__].questionText}"
-                                placeholder="Kirjoita kysymys" />
+                            <input type="hidden" th:field="*{questions[__${qStat.index}__].questionId}" />
+                            <input type="text" th:field="*{questions[__${qStat.index}__].questionText}"
+                                class="form-control" placeholder="Kirjoita kysymys" required />
                         </td>
                         <td>
                             <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
@@ -59,6 +60,19 @@
                 </tbody>
             </table>
 
+            <!-- Template rivi (JS kloonaa tämän) -->
+            <template id="questionRowTemplate">
+                <tr>
+                    <td>
+                        <input type="hidden" name="questions[__INDEX__].questionId" value="" />
+                        <input type="text" name="questions[__INDEX__].questionText" class="form-control"
+                            placeholder="Kirjoita kysymys" required />
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
+                    </td>
+                </tr>
+            </template>
             <p>
                 <button type="button" class="btn btn-secondary" onclick="addQuestionRow()">Lisää kysymys</button>
             </p>
@@ -68,19 +82,6 @@
                 <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" class="btn btn-secondary ms-2">Peruuta</a>
             </p>
         </form>
-
-        <!-- Template rivi (JS kloonaa tämän) -->
-        <template id="questionRowTemplate">
-            <tr>
-                <td>
-                    <input type="text" class="form-control" name="questions[__INDEX__].questionText"
-                        placeholder="Kirjoita kysymys" />
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
-                </td>
-            </tr>
-        </template>
     </div>
 
     <script>
@@ -103,15 +104,20 @@
 
         // Korjaa indeksoinnin ennen submit
         function reindexAll() {
-            const tbody = document.querySelector('#questionsTable tbody');
-            const rows = tbody.querySelectorAll('tr');
+            const rows = document.querySelectorAll('#questionsTable tbody tr');
             rows.forEach((tr, i) => {
                 const inputs = tr.querySelectorAll('input');
                 inputs.forEach(inp => {
-                    const base = inp.getAttribute('name');
-                    if (!base) return;
-                    const newName = base.replace(/questions\[\d+\]/, `questions[${i}]`);
-                    inp.name = newName;
+                    const name = inp.getAttribute('name');
+                    if (name) {
+                        inp.name = name.replace(/questions\[\d+\]/, `questions[${i}]`);
+                    } else if (inp.hasAttribute('th:field')) {
+                        // jos Thymeleaf poistaa name-attribuutin, varmistetaan fallback
+                        const field = inp.getAttribute('th:field');
+                        if (field) {
+                            inp.name = field.replace('*{', '').replace('}', '').replace(/\[__\$\{.*\}__\]/, `[${i}]`);
+                        }
+                    }
                 });
             });
         }
