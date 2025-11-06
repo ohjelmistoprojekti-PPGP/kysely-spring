@@ -2,6 +2,7 @@ package ppg.spring.springrepository.web;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import ppg.spring.springrepository.domain.ResponseRepository;
 import ppg.spring.springrepository.domain.Survey;
 import ppg.spring.springrepository.domain.SurveyRepository;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api")
 public class SurveyRestController {
