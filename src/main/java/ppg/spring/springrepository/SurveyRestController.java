@@ -1,4 +1,4 @@
-package ppg.spring.springrepository.web;
+package ppg.spring.springrepository;
 
 import java.util.List;
 
