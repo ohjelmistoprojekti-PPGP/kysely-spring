@@ -81,7 +81,13 @@
             <p>
                 <button type="submit" class="btn btn-success">Tallenna</button>
                 <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" class="btn btn-secondary ms-2">Peruuta</a>
+
             </p>
+            <!-- TO DO: siirrä nappi oikeaan reunaan -->
+            <div class="mb-3">
+                <a th:href="@{/deletesurvey/{id}(id=${survey.surveyId})}" class="btn btn btn-danger">Poista kysely</a>
+            </div>
+
         </form>
     </div>
 

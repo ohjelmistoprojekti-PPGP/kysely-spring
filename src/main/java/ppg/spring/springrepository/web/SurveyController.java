@@ -144,4 +144,18 @@ public class SurveyController {
         surveyRepository.save(existingSurvey);
         return "redirect:/viewsurvey/" + id;
     }
+
+    // Delete survey (with confirmation)
+    @GetMapping("/deletesurvey/{id}")
+    public String confirmDeleteSurvey(@PathVariable Long id, Model model) {
+        model.addAttribute("survey", surveyRepository.findById(id).orElse(null));
+        return "deletesurvey";
+    }
+
+    @PostMapping("/deletesurvey/{id}")
+    public String deleteSurvey(@PathVariable Long id) {
+        surveyRepository.deleteById(id);
+        return "redirect:/index";
+
+    }
 }

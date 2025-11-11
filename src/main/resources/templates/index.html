@@ -10,17 +10,18 @@
 
 <body>
     <div style="margin: 20px;">
-    <h1>Kyselyt</h1>
-    <ul class="list-unstyled">
-        <li th:each="survey : ${surveys}">
-            <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" th:text="${survey.surveyName}"></a>
-            <span> — </span>
-            <span th:text="${survey.surveyDesc}"></span>
-            <a th:href="@{/editsurvey/{id}(id=${survey.surveyId})}"
-                class="btn btn-sm btn-outline-primary ms-2">Muokkaa</a>
-        </li>
-    </ul>
-    <a href="/addsurvey" class="btn btn-primary">Uusi Kysely</a>
+        <h1>Kyselyt</h1>
+        <ul class="list-unstyled">
+            <li th:each="survey : ${surveys}">
+                <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" th:text="${survey.surveyName}"></a>
+                <span> — </span>
+                <span th:text="${survey.surveyDesc}"></span>
+                <a th:href="@{/editsurvey/{id}(id=${survey.surveyId})}"
+                    class="btn btn-sm btn-outline-primary ms-2">Muokkaa</a>
+                <a th:href="@{/deletesurvey/{id}(id=${survey.surveyId})}" class="btn btn-sm btn-danger">Poista</a>
+            </li>
+        </ul>
+        <a href="/addsurvey" class="btn btn-primary">Uusi Kysely</a>
     </div>
 </body>
 
