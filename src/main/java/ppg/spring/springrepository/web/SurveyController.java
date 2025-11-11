@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import ppg.spring.springrepository.domain.Survey;
-import ppg.spring.springrepository.domain.SurveyRepository;
 import ppg.spring.springrepository.domain.Question;
 import ppg.spring.springrepository.domain.QuestionRepository;
+import ppg.spring.springrepository.domain.Survey;
+import ppg.spring.springrepository.domain.SurveyRepository;
 
 @Controller
 public class SurveyController {
@@ -31,6 +31,11 @@ public class SurveyController {
     public String getKyselyt(Model model) {
         model.addAttribute("surveys", surveyRepository.findAll());
         return "index"; // index.html
+    }
+
+    @GetMapping("/")
+    public String redirectToKyselyt() {
+        return "redirect:/index";
     }
 
     // Add a new survey
