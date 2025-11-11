@@ -87,25 +87,29 @@ public class SurveyController {
         Survey existingSurvey = surveyRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
 
-        // Päivitä peruskentät
+        // Updates the basic fields, preserves dates unless user provides new ones
         existingSurvey.setSurveyName(updatedSurvey.getSurveyName());
         existingSurvey.setSurveyDesc(updatedSurvey.getSurveyDesc());
+
+        if (updatedSurvey.getCreatedDate() != null && !updatedSurvey.getCreatedDate().isBlank()) {
+            existingSurvey.setCreatedDate(updatedSurvey.getCreatedDate()); // only if present
+        }
         existingSurvey.setStartingDate(updatedSurvey.getStartingDate());
         existingSurvey.setEndingDate(updatedSurvey.getEndingDate());
 
-        // Varmistetaan, että kysymyslista ei ole null
+        // Confirms, that questionlist != null
         if (existingSurvey.getQuestions() == null) {
             existingSurvey.setQuestions(new ArrayList<>());
         }
 
-        // Luo uusi lista päivitettyjä kysymyksiä varten
+        // Creates a new list for the updated questions
         List<Question> newQuestions = new ArrayList<>();
 
         if (updatedSurvey.getQuestions() != null) {
             for (Question q : updatedSurvey.getQuestions()) {
                 if (q.getQuestionText() != null && !q.getQuestionText().trim().isEmpty()) {
 
-                    // Jos olemassa oleva ID, päivitetään olemassa oleva kysymys
+                    // If the ID exists, the exising question is updated
                     if (q.getQuestionId() != null) {
                         Question existing = existingSurvey.getQuestions().stream()
                                 .filter(x -> x.getQuestionId().equals(q.getQuestionId()))
@@ -116,12 +120,12 @@ public class SurveyController {
                             existing.setQuestionText(q.getQuestionText());
                             newQuestions.add(existing);
                         } else {
-                            // Jos ei löydy, lisätään uutena
+                            // if not, the question is added as new
                             q.setSurvey(existingSurvey);
                             newQuestions.add(q);
                         }
                     } else {
-                        // Uusi kysymys
+                        // New question
                         q.setSurvey(existingSurvey);
                         newQuestions.add(q);
                     }
@@ -129,11 +133,15 @@ public class SurveyController {
             }
         }
 
-        // Korvataan vanha lista uudella (turvallisesti)
-        existingSurvey.setQuestions(newQuestions);
+        // Modifies the managed collection
+        existingSurvey.getQuestions().clear();
+        for (Question q : newQuestions) {
+            // ensure bidirectional link
+            q.setSurvey(existingSurvey);
+            existingSurvey.getQuestions().add(q);
+        }
 
         surveyRepository.save(existingSurvey);
-
         return "redirect:/viewsurvey/" + id;
     }
 }
