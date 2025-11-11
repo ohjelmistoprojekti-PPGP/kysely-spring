@@ -75,17 +75,20 @@
                 </tr>
             </template>
             <p>
-                <button type="button" class="btn btn-secondary" onclick="addQuestionRow()">Lisää kysymys</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="addQuestionRow()">Lisää
+                    kysymys</button>
             </p>
 
-            <p>
-                <button type="submit" class="btn btn-success">Tallenna</button>
-                <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" class="btn btn-secondary ms-2">Peruuta</a>
-
-            </p>
-            <!-- TO DO: siirrä nappi oikeaan reunaan -->
-            <div class="mb-3">
-                <a th:href="@{/deletesurvey/{id}(id=${survey.surveyId})}" class="btn btn btn-danger">Poista kysely</a>
+            <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+                <div>
+                    <button type="submit" class="btn btn-success">Tallenna</button>
+                    <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" class="btn btn-secondary ms-2">Peruuta</a>
+                </div>
+                <div>
+                    <a th:href="@{/deletesurvey/{id}(id=${survey.surveyId})}" class="btn btn-danger">
+                        Poista kysely
+                    </a>
+                </div>
             </div>
 
         </form>
