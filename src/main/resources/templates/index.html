@@ -1,28 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <title>Kyselyt</title>
 </head>
-
 <body>
-    <div style="margin: 20px;">
-        <h1>Kyselyt</h1>
-        <ul class="list-unstyled">
-            <li th:each="survey : ${surveys}">
-                <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" th:text="${survey.surveyName}"></a>
-                <span> — </span>
-                <span th:text="${survey.surveyDesc}"></span>
-                <a th:href="@{/editsurvey/{id}(id=${survey.surveyId})}"
-                    class="btn btn-sm btn-outline-primary ms-2">Muokkaa</a>
-                <a th:href="@{/deletesurvey/{id}(id=${survey.surveyId})}" class="btn btn-sm btn-danger">Poista</a>
-            </li>
-        </ul>
-        <a href="/addsurvey" class="btn btn-primary">Uusi Kysely</a>
-    </div>
-</body>
+    <div class="container mt-5" style="max-width: 100%;">
+    <h1 class="text-center mb-4">Kyselyt</h1>
 
+    <table class="table table-striped text-center align-middle">
+        <thead class="table-dark">
+        <tr>
+            <th>Nimi</th>
+            <th>Kuvaus</th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="survey : ${surveys}">
+            <td th:text="${survey.surveyName}">Kyselyn nimi</td>
+            <td th:text="${survey.surveyDesc}">Kuvaus</td>
+            <td>
+                <a th:href="@{/viewsurvey/{id}(id=${survey.surveyId})}" class="btn btn-outline-info btn-sm">
+                    Avaa
+                </a>
+            </td>
+            <td>
+                <a th:href="@{/editsurvey/{id}(id=${survey.surveyId})}" class="btn btn-secondary btn-sm">
+                    Muokkaa
+                </a>
+            </td>
+            <td>
+                <a th:href="@{/deletesurvey/{id}(id=${survey.surveyId})}" class="btn btn-danger btn-sm">
+                    Poista
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+        <a href="/addsurvey" class="btn btn-success">Uusi kysely</a>
+    </div>
+</div>
+</body>
 </html>
+
