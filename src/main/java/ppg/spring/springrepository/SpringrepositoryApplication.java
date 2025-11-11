@@ -60,6 +60,8 @@ public class SpringrepositoryApplication {
 			hhkysely.getQuestions().add(new Question("Kuinka todennäköisesti suosittelisit HH IT-Tradenomin koulutusohjelmaa muille? (1-5)", hhkysely));
 			hhkysely.getQuestions().add(new Question("Vapaata palautetta/kehitysideoita:", hhkysely));
 
+			SurveyRepository.save(hhkysely);
+
 		};
 
 		
