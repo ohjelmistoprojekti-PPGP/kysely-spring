@@ -1,6 +1,7 @@
 package ppg.spring.springrepository.web;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -81,35 +82,85 @@ public class SurveyController {
     public String editSurvey(@PathVariable("id") Long id, Model model) {
         Survey survey = surveyRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
+        survey.getQuestions().size();
         model.addAttribute("survey", survey);
         return "editsurvey"; // TO-DO: editsurvey.html
     }
 
     @PostMapping("/editsurvey/{id}")
     public String saveEditedSurvey(@PathVariable("id") Long id, @ModelAttribute Survey updatedSurvey) {
-        Survey survey = surveyRepository.findById(id)
+        Survey existingSurvey = surveyRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
 
-        // Update the survey fields
-        survey.setSurveyName(updatedSurvey.getSurveyName());
-        survey.setSurveyDesc(updatedSurvey.getSurveyDesc());
-        survey.setStartingDate(updatedSurvey.getStartingDate());
-        survey.setEndingDate(updatedSurvey.getEndingDate());
+        // Updates the basic fields, preserves dates unless user provides new ones
+        existingSurvey.setSurveyName(updatedSurvey.getSurveyName());
+        existingSurvey.setSurveyDesc(updatedSurvey.getSurveyDesc());
 
-        // Handle questions
+        if (updatedSurvey.getCreatedDate() != null && !updatedSurvey.getCreatedDate().isBlank()) {
+            existingSurvey.setCreatedDate(updatedSurvey.getCreatedDate()); // only if present
+        }
+        existingSurvey.setStartingDate(updatedSurvey.getStartingDate());
+        existingSurvey.setEndingDate(updatedSurvey.getEndingDate());
+
+        // Confirms, that questionlist != null
+        if (existingSurvey.getQuestions() == null) {
+            existingSurvey.setQuestions(new ArrayList<>());
+        }
+
+        // Creates a new list for the updated questions
+        List<Question> newQuestions = new ArrayList<>();
+
         if (updatedSurvey.getQuestions() != null) {
-            // Remove any questions that were deleted in the form
-            survey.getQuestions().clear();
-
-            // Re-add all questions from the form
             for (Question q : updatedSurvey.getQuestions()) {
-                q.setSurvey(survey);
-                survey.getQuestions().add(q);
+                if (q.getQuestionText() != null && !q.getQuestionText().trim().isEmpty()) {
+
+                    // If the ID exists, the exising question is updated
+                    if (q.getQuestionId() != null) {
+                        Question existing = existingSurvey.getQuestions().stream()
+                                .filter(x -> x.getQuestionId().equals(q.getQuestionId()))
+                                .findFirst()
+                                .orElse(null);
+
+                        if (existing != null) {
+                            existing.setQuestionText(q.getQuestionText());
+                            newQuestions.add(existing);
+                        } else {
+                            // if not, the question is added as new
+                            q.setSurvey(existingSurvey);
+                            newQuestions.add(q);
+                        }
+                    } else {
+                        // New question
+                        q.setSurvey(existingSurvey);
+                        newQuestions.add(q);
+                    }
+                }
             }
         }
 
-        surveyRepository.save(survey);
+        // Modifies the managed collection
+        existingSurvey.getQuestions().clear();
+        for (Question q : newQuestions) {
+            // ensure bidirectional link
+            q.setSurvey(existingSurvey);
+            existingSurvey.getQuestions().add(q);
+        }
 
+        surveyRepository.save(existingSurvey);
         return "redirect:/viewsurvey/" + id;
+    }
+
+    // Delete survey (with confirmation)
+    @GetMapping("/deletesurvey/{id}")
+    public String confirmDeleteSurvey(@PathVariable Long id, Model model) {
+        model.addAttribute("survey", surveyRepository.findById(id).orElse(null));
+        return "deletesurvey";
+    }
+
+    @PostMapping("/deletesurvey/{id}")
+    public String deleteSurvey(@PathVariable Long id) {
+        surveyRepository.deleteById(id);
+        return "redirect:/index";
+
     }
 }

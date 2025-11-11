@@ -26,10 +26,10 @@ public class SpringrepositoryApplication {
 		// Default survey
 		return (args) -> {
 			log.info("Save survey");
-			Survey survey1 = new Survey("Eläintesti", "Selvitä mikä eläin olet", "28.10.2025", "29.10.2025",
-					"30.10.2025");
+			Survey survey1 = new Survey("Eläintesti", "Selvitä mikä eläin olet", "12.12.2025", "12.12.2025",
+					"22.12.2025");
 			SurveyRepository.save(survey1);
-			
+
 			survey1.getQuestions().add(new Question("Oletko viekas", survey1));
 			survey1.getQuestions().add(new Question("Oletko älykäs", survey1));
 			survey1.getQuestions().add(new Question("Oletko lempeä", survey1));
