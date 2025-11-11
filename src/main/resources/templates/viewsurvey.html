@@ -12,13 +12,16 @@
     <h1 th:text="${survey.surveyName}">Kyselyn otsikko</h1>
     <p th:text="${survey.surveyDesc}">Kyselyn kuvaus</p>
 
-    <h3>Questions</h3>
+    <h3>Kysymykset</h3>
     <ul class="list-group mb-3">
         <li class="list-group-item" th:each="q : ${survey.questions}" th:text="${q.questionText}"></li>
     </ul>
 
-    <a th:href="@{/editsurvey/{id}(id=${survey.surveyId})}" class="btn btn-primary">Muokkaa kyselyä</a>
-    <a href="/index" class="btn btn-secondary">Takaisin</a>
+    <div class="container mb-3">
+        <a th:href="@{/editsurvey/{id}(id=${survey.surveyId})}" class="btn btn-primary">Muokkaa kyselyä</a>
+        <a href="/index" class="btn btn-secondary">Takaisin</a>
+    </div>
+
 </body>
 
 </html>
