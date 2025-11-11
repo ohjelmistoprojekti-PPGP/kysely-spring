@@ -38,7 +38,7 @@ public class SpringrepositoryApplication {
 
 			//seuraava kysely
 
-			Survey hhkysely = new Survey("HH-kysely", "Kerro, mitä mieltä olet HH IT-Tradenomin koulutusohjelman opetuksen laadusta.", "13.11.2025", "13.11.2025", "22.12.2025");
+			Survey hhkysely = new Survey("HH-kysely", "Kerro, mitä mieltä olet HH IT-Tradenomin koulutusohjelman opetuksen laadusta!", "13.11.2025", "13.11.2025", "22.12.2025");
 			SurveyRepository.save(hhkysely);
 
 			hhkysely.getQuestions().add(new Question("Monennenko vuoden opiskelija olet?", hhkysely));
