@@ -45,7 +45,7 @@ public class SpringrepositoryApplication {
 			hhkysely.getQuestions().add(new Question("Opintojesi suuntaus?", hhkysely));
 			hhkysely.getQuestions().add(new Question("Opintojesi toteutusmuoto?", hhkysely));
 			hhkysely.getQuestions().add(new Question("Ikäsi:", hhkysely));
-			hhkysely.getQuestions().add(new Question("Sukupulesi:", hhkysely));
+			hhkysely.getQuestions().add(new Question("Sukupuolesi:", hhkysely));
 			hhkysely.getQuestions().add(new Question("Arviosi kurssitarjonnasta suuntautumisessasi:", hhkysely));
 			hhkysely.getQuestions().add(new Question("Arviosi opetuksen laadusta:", hhkysely));
 			// (kommenttirivi: voit arvioida opetuksenlaatua keskimääräisesti tai yksittäisten kurssien perusteella. 
@@ -53,7 +53,7 @@ public class SpringrepositoryApplication {
 			hhkysely.getQuestions().add(new Question("Kuinka hyvin koet opintojen valmistavan sinua työelämään?", hhkysely));
 			// (kommenttirivi: voit arvioida opetuksenlaatua keskimääräisesti tai yksittäisten kurssien perusteella. 
 			//Mainitsethan kurssit nimeltä)
-			hhkysely.getQuestions().add(new Question("Kuinka hyvin koet kurssien vastaavan kuvauksi?", hhkysely));
+			hhkysely.getQuestions().add(new Question("Kuinka hyvin koet kurssien vastaavan kuvauksia?", hhkysely));
 			// (kommenttirivi: voit arvioida opetuksenlaatua keskimääräisesti tai yksittäisten kurssien perusteella. 
 			//Mainitsethan kurssit nimeltä)
 			hhkysely.getQuestions().add(new Question("Kuinka todennäköisesti suosittelisit omaa suuntautumistasi muille? (1-5)", hhkysely));
