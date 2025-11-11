@@ -36,7 +36,33 @@ public class SpringrepositoryApplication {
 
 			SurveyRepository.save(survey1);
 
+			//seuraava kysely
+
+			Survey hhkysely = new Survey("HH-kysely", "Kerro, mitä mieltä olet HH IT-Tradenomin koulutusohjelman opetuksen laadusta.", "13.11.2025", "13.11.2025", "22.12.2025");
+			SurveyRepository.save(hhkysely);
+
+			hhkysely.getQuestions().add(new Question("Monennenko vuoden opiskelija olet?", hhkysely));
+			hhkysely.getQuestions().add(new Question("Opintojesi suuntaus?", hhkysely));
+			hhkysely.getQuestions().add(new Question("Opintojesi toteutusmuoto?", hhkysely));
+			hhkysely.getQuestions().add(new Question("Ikäsi:", hhkysely));
+			hhkysely.getQuestions().add(new Question("Sukupulesi:", hhkysely));
+			hhkysely.getQuestions().add(new Question("Arviosi kurssitarjonnasta suuntautumisessasi:", hhkysely));
+			hhkysely.getQuestions().add(new Question("Arviosi opetuksen laadusta:", hhkysely));
+			// (kommenttirivi: voit arvioida opetuksenlaatua keskimääräisesti tai yksittäisten kurssien perusteella. 
+			//Mainitsethan kurssit nimeltä)
+			hhkysely.getQuestions().add(new Question("Kuinka hyvin koet opintojen valmistavan sinua työelämään?", hhkysely));
+			// (kommenttirivi: voit arvioida opetuksenlaatua keskimääräisesti tai yksittäisten kurssien perusteella. 
+			//Mainitsethan kurssit nimeltä)
+			hhkysely.getQuestions().add(new Question("Kuinka hyvin koet kurssien vastaavan kuvauksi?", hhkysely));
+			// (kommenttirivi: voit arvioida opetuksenlaatua keskimääräisesti tai yksittäisten kurssien perusteella. 
+			//Mainitsethan kurssit nimeltä)
+			hhkysely.getQuestions().add(new Question("Kuinka todennäköisesti suosittelisit omaa suuntautumistasi muille? (1-5)", hhkysely));
+			hhkysely.getQuestions().add(new Question("Kuinka todennäköisesti suosittelisit HH IT-Tradenomin koulutusohjelmaa muille? (1-5)", hhkysely));
+			hhkysely.getQuestions().add(new Question("Vapaata palautetta/kehitysideoita:", hhkysely));
+
 		};
+
+		
 	}
 
 }
