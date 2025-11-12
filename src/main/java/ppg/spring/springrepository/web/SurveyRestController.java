@@ -1,14 +1,19 @@
 package ppg.spring.springrepository.web;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import ppg.spring.springrepository.domain.Question;
 import ppg.spring.springrepository.domain.QuestionRepository;
@@ -54,11 +59,17 @@ public class SurveyRestController {
         return survey.getQuestions();
     }
 
-    // Tallentaa vastaukset tiettyyn kyselyyn
-    @PostMapping("/surveys/{id}/responses")
-    public String saveResponses(@PathVariable Long id, @RequestBody List<Response> responses) {
-        responseRepository.saveAll(responses);
-        return "Vastaukset tallennettu!";
-    }
+    // Tallentaa vastaukset tiettyyn kyselyyn tiettyyn kysymykseen
+   @PostMapping("/surveys/{id}/responses")
+    public @ResponseBody List<Response> saveResponses(@PathVariable Long id, @RequestBody List<Response> responses) {
+    responses.forEach(r -> {
+        Long questionId = r.getQuestion().getQuestionId();  // frontend lähettää kysymysolion ja vastaustekstin
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kysymystä ei löytynyt"));
+        r.setQuestion(question);
+    });
+
+    return (List<Response>) responseRepository.saveAll(responses);
+}
 
 }
