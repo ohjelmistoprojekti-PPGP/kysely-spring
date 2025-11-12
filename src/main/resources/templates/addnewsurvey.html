@@ -29,7 +29,8 @@
         </div>
         <div class="mb-3">
           <label for="surveyDesc" class="form-label">Kuvaus:</label>
-          <input type="text" class="form-control" id="surveyDesc" th:field="*{surveyDesc}" required /><br />
+          <textarea class="form-control" id="surveyDesc" th:field="*{surveyDesc}" rows="6" required></textarea><br />
+          <!-- <input type="text" class="form-control" id="surveyDesc" th:field="*{surveyDesc}" required /><br /> -->
         </div>
         <div class="mb-3">
           <label for="startingDate" class="form-label">Aloituspäivä:</label>
