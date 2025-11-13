@@ -1,5 +1,6 @@
 package ppg.spring.springrepository.web;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class SurveyController {
         Survey survey = new Survey();
         survey.setSurveyName("");
         survey.setSurveyDesc("");
-        survey.setCreatedDate("");
+        survey.setCreatedDate(LocalDateTime.now());
         survey.setStartingDate("");
         survey.setEndingDate("");
         survey.setQuestions(new ArrayList<>());
@@ -62,6 +63,7 @@ public class SurveyController {
                 q.setSurvey(survey);
             }
         }
+        survey.setCreatedDate(LocalDateTime.now());
         surveyRepository.save(survey);
         return "redirect:/index";
     }
@@ -96,9 +98,10 @@ public class SurveyController {
         existingSurvey.setSurveyName(updatedSurvey.getSurveyName());
         existingSurvey.setSurveyDesc(updatedSurvey.getSurveyDesc());
 
-        if (updatedSurvey.getCreatedDate() != null && !updatedSurvey.getCreatedDate().isBlank()) {
-            existingSurvey.setCreatedDate(updatedSurvey.getCreatedDate()); // only if present
-        }
+        // Mitä tämän on tarkoitus tarkistaa?
+        // if (updatedSurvey.getCreatedDate() != null && !updatedSurvey.getCreatedDate().isBlank()) {
+        //     existingSurvey.setCreatedDate(updatedSurvey.getCreatedDate()); // only if present
+        // }
         existingSurvey.setStartingDate(updatedSurvey.getStartingDate());
         existingSurvey.setEndingDate(updatedSurvey.getEndingDate());
 

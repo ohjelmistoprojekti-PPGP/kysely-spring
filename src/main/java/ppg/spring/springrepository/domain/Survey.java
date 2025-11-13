@@ -1,11 +1,13 @@
 package ppg.spring.springrepository.domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,18 +29,19 @@ public class Survey {
 
     private String surveyName;
     private String surveyDesc;
-    private String createdDate;
+    @Column(name = "date_created", nullable = false, updatable = true)
+    private LocalDateTime createdDate;
     private String startingDate;
     private String endingDate;
 
     // constructors
-    public Survey(String surveyName, String surveyDesc, String createdDate, String startingDate,
+    public Survey(String surveyName, String surveyDesc, String startingDate,
             String endingDate) {
         this.surveyName = surveyName;
         this.surveyDesc = surveyDesc;
-        this.createdDate = createdDate;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
+        this.createdDate = LocalDateTime.now();
     }
 
     public Survey() {
@@ -66,7 +69,7 @@ public class Survey {
         return surveyDesc;
     }
 
-    public String getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
@@ -94,7 +97,7 @@ public class Survey {
         this.surveyDesc = surveyDesc;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -109,7 +112,7 @@ public class Survey {
     @Override
     public String toString() {
         return "Survey [surveyId=" + surveyId + ", questions=" + questions + ", surveyName=" + surveyName
-                + ", surveyDesc=" + surveyDesc + ", createdDate=" + createdDate + ", startingDate=" + startingDate
+                + ", surveyDesc=" + surveyDesc  + ", startingDate=" + startingDate
                 + ", endingDate=" + endingDate + "]";
     }
 
