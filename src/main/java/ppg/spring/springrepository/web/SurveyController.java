@@ -94,14 +94,9 @@ public class SurveyController {
         Survey existingSurvey = surveyRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
 
-        // Updates the basic fields, preserves dates unless user provides new ones
+        // Updates the basic fields
         existingSurvey.setSurveyName(updatedSurvey.getSurveyName());
         existingSurvey.setSurveyDesc(updatedSurvey.getSurveyDesc());
-
-        // Mitä tämän on tarkoitus tarkistaa?
-        // if (updatedSurvey.getCreatedDate() != null && !updatedSurvey.getCreatedDate().isBlank()) {
-        //     existingSurvey.setCreatedDate(updatedSurvey.getCreatedDate()); // only if present
-        // }
         existingSurvey.setStartingDate(updatedSurvey.getStartingDate());
         existingSurvey.setEndingDate(updatedSurvey.getEndingDate());
 
