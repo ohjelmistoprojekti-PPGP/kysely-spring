@@ -32,14 +32,14 @@ public class Question {
     @JoinColumn(name = "surveyId")
     private Survey survey;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
-    @JsonIgnore
-
+    
     @ElementCollection
     @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_id"))
     @Column(name = "option_value")
     private List<String> options = new ArrayList<>();
-
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
+    @JsonIgnore
     private List<Response> responses = new ArrayList<>();
 
     // constructors
