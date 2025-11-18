@@ -1,10 +1,8 @@
 package ppg.spring.springrepository.web;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,16 +58,16 @@ public class SurveyRestController {
     }
 
     // Tallentaa vastaukset tiettyyn kyselyyn tiettyyn kysymykseen
-   @PostMapping("/surveys/{id}/responses")
+    @PostMapping("/surveys/{id}/responses")
     public @ResponseBody List<Response> saveResponses(@PathVariable Long id, @RequestBody List<Response> responses) {
-    responses.forEach(r -> {
-        Long questionId = r.getQuestion().getQuestionId();  // frontend lähettää kysymysolion ja vastaustekstin
-        Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kysymystä ei löytynyt"));
-        r.setQuestion(question);
-    });
+        responses.forEach(r -> {
+            Long questionId = r.getQuestion().getQuestionId(); // frontend lähettää kysymysolion ja vastaustekstin
+            Question question = questionRepository.findById(questionId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kysymystä ei löytynyt"));
+            r.setQuestion(question);
+        });
 
-    return (List<Response>) responseRepository.saveAll(responses);
-}
+        return (List<Response>) responseRepository.saveAll(responses);
+    }
 
 }
