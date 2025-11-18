@@ -60,14 +60,14 @@ public class SurveyRestController {
     // Tallentaa vastaukset tiettyyn kyselyyn tiettyyn kysymykseen
     @PostMapping("/surveys/{id}/responses")
     public @ResponseBody List<Response> saveResponses(@PathVariable Long id, @RequestBody List<Response> responses) {
-        responses.forEach(r -> {
-            Long questionId = r.getQuestion().getQuestionId(); // frontend lähettää kysymysolion ja vastaustekstin
-            Question question = questionRepository.findById(questionId)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kysymystä ei löytynyt"));
-            r.setQuestion(question);
-        });
+    responses.forEach(r -> {
+        Long questionId = r.getQuestion().getQuestionId();  // frontend lähettää kysymysolion ja vastaustekstin
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kysymystä ei löytynyt"));
+        r.setQuestion(question);
+    });
 
-        return (List<Response>) responseRepository.saveAll(responses);
-    }
+    return (List<Response>) responseRepository.saveAll(responses);
+}
 
 }
