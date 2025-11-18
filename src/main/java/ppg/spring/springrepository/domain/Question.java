@@ -36,7 +36,7 @@ public class Question {
 
     // constructors
 
-    public Question(String questionText, Survey survey) {
+    public Question(String questionText, Survey survey, String questionType) {
         this.questionText = questionText;
         this.survey = survey;
         this.questionType = questionType;
