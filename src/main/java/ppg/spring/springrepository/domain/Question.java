@@ -23,6 +23,7 @@ public class Question {
 
     // attributes
     private String questionText;
+    private String questionType;
 
     @ManyToOne
     @JoinColumn(name = "surveyId")
@@ -35,10 +36,10 @@ public class Question {
 
     // constructors
 
-    public Question(String questionText, Survey survey) {
+    public Question(String questionText, Survey survey, String questionType) {
         this.questionText = questionText;
         this.survey = survey;
-
+        this.questionType = questionType;
     }
 
     public Question() {
@@ -62,6 +63,14 @@ public class Question {
         this.questionText = questionText;
     }
 
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
+
     public Survey getSurvey() {
         return survey;
     }
@@ -80,7 +89,8 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [questionId=" + questionId + ", questionText=" + questionText + ", survey=" + survey + "]";
+        return "Question [questionId=" + questionId + ", questionText=" + questionText + "questionType=" + questionType
+                + ", survey=" + survey + "]";
     }
 
 }

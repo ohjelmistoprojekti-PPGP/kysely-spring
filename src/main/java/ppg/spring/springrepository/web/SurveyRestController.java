@@ -63,22 +63,11 @@ public class SurveyRestController {
     responses.forEach(r -> {
         Long questionId = r.getQuestion().getQuestionId();  // frontend lähettää kysymysolion ja vastaustekstin
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kysymystä ei löytynyt"));
         r.setQuestion(question);
     });
+
     return (List<Response>) responseRepository.saveAll(responses);
-    }
-    // Hakee kaikki kyselyt vastaukset
-    @GetMapping("/surveys/{id}/responses")
-    public List<Response> getResponsesBySurvey(@PathVariable Long id) {
-    Survey survey = surveyRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey not found"));
-
-    List<Question> questions = survey.getQuestions();
-
-    // Hakee kaikki vastaukset, joissa question IN (kyselyn kysymykset)
-    return responseRepository.findByQuestionIn(questions);
 }
-
 
 }
