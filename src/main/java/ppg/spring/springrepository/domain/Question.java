@@ -6,6 +6,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,14 +35,20 @@ public class Question {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
     @JsonIgnore
 
+    @ElementCollection
+    @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_id"))
+    @Column(name = "option_value")
+    private List<String> options = new ArrayList<>();
+
     private List<Response> responses = new ArrayList<>();
 
     // constructors
 
-    public Question(String questionText, Survey survey, String questionType) {
+    public Question(String questionText, Survey survey, String questionType, List<String> options) {
         this.questionText = questionText;
         this.survey = survey;
         this.questionType = questionType;
+        this.options = options;
     }
 
     public Question() {
@@ -71,6 +80,14 @@ public class Question {
         this.questionType = questionType;
     }
 
+    public List<String> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<String> options) {
+        this.options = options;
+    }
+
     public Survey getSurvey() {
         return survey;
     }
@@ -90,6 +107,7 @@ public class Question {
     @Override
     public String toString() {
         return "Question [questionId=" + questionId + ", questionText=" + questionText + "questionType=" + questionType
+                + "options=" + options
                 + ", survey=" + survey + "]";
     }
 
