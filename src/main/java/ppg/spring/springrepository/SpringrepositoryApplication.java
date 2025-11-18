@@ -79,13 +79,14 @@ public class SpringrepositoryApplication {
 					"18.11.2025", "20.1.2.2025");
 			SurveyRepository.save(elementtikysely);
 
-			elementtikysely.getQuestions().add(new Question("Minkä näistä valitsisit?", elementtikysely)); // monivalinta
-																											// (tuli,
-																											// vesi,
-																											// ilma,
-																											// maa)
 			elementtikysely.getQuestions()
-					.add(new Question("Miksi valitsit juuri kyseisen elementin?", elementtikysely));
+					.add(new Question("Minkä näistä valitsisit?", elementtikysely, "radioButton")); // monivalinta
+			// (tuli,
+			// vesi,
+			// ilma,
+			// maa)
+			elementtikysely.getQuestions()
+					.add(new Question("Miksi valitsit juuri kyseisen elementin?", elementtikysely, "text"));
 
 			SurveyRepository.save(elementtikysely);
 
