@@ -60,23 +60,23 @@ public class SurveyRestController {
     // Tallentaa vastaukset tiettyyn kyselyyn tiettyyn kysymykseen
     @PostMapping("/surveys/{id}/responses")
     public @ResponseBody List<Response> saveResponses(@PathVariable Long id, @RequestBody List<Response> responses) {
-    responses.forEach(r -> {
-        Long questionId = r.getQuestion().getQuestionId();  // frontend lähettää kysymysolion ja vastaustekstin
-        Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question not found"));
-        r.setQuestion(question);
-    });
-    return (List<Response>) responseRepository.saveAll(responses);
-}
+        responses.forEach(r -> {
+            Long questionId = r.getQuestion().getQuestionId(); // frontend lähettää kysymysolion ja vastaustekstin
+            Question question = questionRepository.findById(questionId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question not found"));
+            r.setQuestion(question);
+        });
+        return (List<Response>) responseRepository.saveAll(responses);
+    }
+
     // Hakee kaikki vastaukset tiettyyn kyselyyn
     @GetMapping("/surveys/{id}/responses")
     public List<Response> getResponsesBySurvey(@PathVariable Long id) {
-    Survey survey = surveyRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey not found"));
-    List<Question> questions = survey.getQuestions();
+        Survey survey = surveyRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Survey not found"));
+        List<Question> questions = survey.getQuestions();
 
-    return responseRepository.findByQuestionIn(questions);
-}
-
+        return responseRepository.findByQuestionIn(questions);
+    }
 
 }

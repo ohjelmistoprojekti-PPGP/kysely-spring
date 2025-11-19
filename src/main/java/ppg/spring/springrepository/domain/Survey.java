@@ -112,7 +112,7 @@ public class Survey {
     @Override
     public String toString() {
         return "Survey [surveyId=" + surveyId + ", questions=" + questions + ", surveyName=" + surveyName
-                + ", surveyDesc=" + surveyDesc  + ", startingDate=" + startingDate
+                + ", surveyDesc=" + surveyDesc + ", startingDate=" + startingDate
                 + ", endingDate=" + endingDate + "]";
     }
 

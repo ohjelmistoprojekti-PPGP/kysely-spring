@@ -14,7 +14,7 @@ public class Response {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long responseId;
 
-    //attributes
+    // attributes
 
     private String responseText;
 
@@ -22,8 +22,7 @@ public class Response {
     @JoinColumn(name = "questionId")
     private Question question;
 
-
-    //constructors
+    // constructors
 
     public Response(String responseText, Question question) {
         this.responseText = responseText;
@@ -59,32 +58,11 @@ public class Response {
         this.question = question;
     }
 
-    //toString
+    // toString
 
     @Override
     public String toString() {
         return "Response [responseId=" + responseId + ", responseText=" + responseText + ", question=" + question + "]";
     }
-
-    
-
-    
-
-
-    
-
-    
-    
-
-
-     
-
-    
-
-    
-
-    
-
-
 
 }
