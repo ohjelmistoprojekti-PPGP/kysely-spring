@@ -30,7 +30,6 @@
         <div class="mb-3">
           <label for="surveyDesc" class="form-label">Kuvaus:</label>
           <textarea class="form-control" id="surveyDesc" th:field="*{surveyDesc}" rows="6" required></textarea><br />
-          <!-- <input type="text" class="form-control" id="surveyDesc" th:field="*{surveyDesc}" required /><br /> -->
         </div>
         <div class="mb-3">
           <label for="startingDate" class="form-label">Aloituspäivä:</label>
@@ -42,78 +41,180 @@
         </div>
 
         <h3>Kysymykset:</h3>
+
+        <!-- Button group to add different question types -->
+        <div class="mb-3">
+          <button type="button" class="btn btn-secondary" onclick="addQuestionRow('text')">
+            + Tekstikysymys
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="addQuestionRow('radioButton')">
+            + Monivalintakysymys
+          </button>
+          <!-- Future: Add more buttons here for new question types -->
+        </div>
+
         <table id="questionsTable" class="table">
           <tbody>
-            <tr th:each="question, qStat : *{questions}">
-              <td>
-                <input type="text" class="form-control" th:field="*{questions[__${qStat.index}__].questionText}"
-                  placeholder="Kirjoita kysymys" />
-              </td>
-              <td>
-                <a th:href="@{/deletequestion/{id}(id=${question.questionId})}" class="btn btn-danger">
-                  Poista
-                </a>
-              </td>
-            </tr>
+            <!-- Render existing questions using fragments based on type -->
+            <th:block th:each="question, qStat : *{questions}">
+              <!-- Use text fragment -->
+              <th:block th:if="${question.questionType == 'text' or question.questionType == null}">
+                <th:block th:replace="~{fragments/question-text :: textQuestion(${qStat.index})}"></th:block>
+              </th:block>
+
+              <!-- Use radio button fragment -->
+              <th:block th:if="${question.questionType == 'radioButton'}">
+                <th:block
+                  th:replace="~{fragments/question-radiobutton :: radioQuestion(${qStat.index}, ${question.options.size() > 0 ? question.options.size() : 2})}">
+                </th:block>
+              </th:block>
+
+              <!-- Future: Add more fragment replacements here for new question types -->
+            </th:block>
           </tbody>
         </table>
 
-        <p>
-          <button type="button" class="btn btn-secondary" onclick="addQuestionRow()">Lisää kysymys</button>
-        </p>
         <p>
           <input type="submit" value="Tallenna" class="btn btn-success"></input>
           <a th:href="@{/index}" class="btn btn-danger">Peruuta</a>
         </p>
       </form>
     </div>
-    <!-- Template row (ei th:field, luodaan JS:llä) -->
-    <template id="questionRowTemplate">
-      <tr>
-        <td><input type="text" class="form-control" name="questions[__INDEX__].questionText"
-            placeholder="Kirjoita kysymys" /></td>
-        <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button></td>
+
+    <!-- JavaScript templates for dynamically added questions -->
+    <!-- These mirror the fragments above for consistency -->
+    <template id="textQuestionTemplate">
+      <tr data-question-type="text">
+        <td>
+          <input type="text" class="form-control" name="questions[__INDEX__].questionText"
+            placeholder="Kirjoita kysymys" />
+          <input type="hidden" name="questions[__INDEX__].questionType" value="text" />
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
+        </td>
       </tr>
     </template>
+
+    <template id="radioQuestionTemplate">
+      <tr data-question-type="radioButton">
+        <td>
+          <input type="text" class="form-control" name="questions[__INDEX__].questionText"
+            placeholder="Kirjoita kysymys" />
+          <input type="hidden" name="questions[__INDEX__].questionType" value="radioButton" />
+
+          <div class="mt-2 options-container">
+            <label class="form-label small">Vastausvaihtoehdot:</label>
+            <div class="option-inputs">
+              <input type="text" class="form-control form-control-sm mb-1" name="questions[__INDEX__].options[0]"
+                placeholder="Vaihtoehto 1" />
+              <input type="text" class="form-control form-control-sm mb-1" name="questions[__INDEX__].options[1]"
+                placeholder="Vaihtoehto 2" />
+            </div>
+            <button type="button" class="btn btn-sm btn-secondary mt-1" onclick="addOption(this, '__INDEX__')">+ Lisää
+              vaihtoehto</button>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
+        </td>
+      </tr>
+    </template>
+
+    <!-- Future: Add more templates here for new question types -->
   </div>
+
   <script>
-    // Lisää uuden tyhjän kysynysrivin
-    function addQuestionRow() {
+    // Configuration object for question types (easy to extend!)
+    const questionTypes = {
+      text: {
+        templateId: 'textQuestionTemplate',
+        label: 'Tekstikysymys'
+      },
+      radioButton: {
+        templateId: 'radioQuestionTemplate',
+        label: 'Monivalintakysymys'
+      }
+      // Future: Add new question types here
+    };
+
+    // Add a new question row based on type
+    function addQuestionRow(type) {
       const tbody = document.querySelector('#questionsTable tbody');
       const idx = tbody.querySelectorAll('tr').length;
-      const tpl = document.querySelector('#questionRowTemplate').innerHTML;
+
+      const config = questionTypes[type];
+      if (!config) {
+        console.error('Unknown question type:', type);
+        return;
+      }
+
+      const tpl = document.getElementById(config.templateId).innerHTML;
       const html = tpl.replace(/__INDEX__/g, idx);
+
       const tmp = document.createElement('tbody');
       tmp.innerHTML = html;
       tbody.appendChild(tmp.querySelector('tr'));
     }
 
-    // Poistaa rivin ja jättää aukon — reindexAll korjaa indeksit ennen submitia
+    // Remove a question row
     function removeRow(btn) {
       const tr = btn.closest('tr');
       tr.remove();
     }
 
-    // Korjaa kaikki name-attribuutit niin että indices ovat 0..N-1 ilman aukkoja
+    // Add a new option to a radio button question
+    function addOption(btn, questionIndex) {
+      const optionsContainer = btn.previousElementSibling;
+      const optionCount = optionsContainer.querySelectorAll('input').length;
+
+      const newInput = document.createElement('input');
+      newInput.type = 'text';
+      newInput.className = 'form-control form-control-sm mb-1';
+      newInput.name = `questions[${questionIndex}].options[${optionCount}]`;
+      newInput.placeholder = `Vaihtoehto ${optionCount + 1}`;
+
+      optionsContainer.appendChild(newInput);
+    }
+
+    // Reindex all questions and their options before submit
     function reindexAll() {
       const tbody = document.querySelector('#questionsTable tbody');
       const rows = tbody.querySelectorAll('tr');
-      rows.forEach((tr, i) => {
-        const inputs = tr.querySelectorAll('input');
-        inputs.forEach(inp => {
-          const base = inp.name || inp.getAttribute('surveyName'); // jos luotu serverillä, voi olla th:field
-          if (!base) return;
-          // Poista vanha indeksi ja aseta uusi
-          const newName = base.replace(/questions\[\d+\]/, `questions[${i}]`);
-          inp.name = newName;
+
+      rows.forEach((tr, questionIdx) => {
+        // Reindex question text
+        const questionInput = tr.querySelector('input[name*=".questionText"]');
+        if (questionInput) {
+          questionInput.name = `questions[${questionIdx}].questionText`;
+        }
+
+        // Reindex question type
+        const typeInput = tr.querySelector('input[name*=".questionType"]');
+        if (typeInput) {
+          typeInput.name = `questions[${questionIdx}].questionType`;
+        }
+
+        // Reindex options for radio button questions
+        const optionInputs = tr.querySelectorAll('input[name*=".options"]');
+        optionInputs.forEach((optInput, optIdx) => {
+          optInput.name = `questions[${questionIdx}].options[${optIdx}]`;
         });
+
+        // Update addOption button onclick if exists
+        const addOptionBtn = tr.querySelector('button[onclick*="addOption"]');
+        if (addOptionBtn) {
+          addOptionBtn.setAttribute('onclick', `addOption(this, ${questionIdx})`);
+        }
       });
     }
 
-    // Lisää aluksi yksi rivi, jos ei yhtään
+    // Initialize with one text question if empty
     document.addEventListener('DOMContentLoaded', function () {
       const tbody = document.querySelector('#questionsTable tbody');
-      if (tbody.querySelectorAll('tr').length === 0) addQuestionRow();
+      if (tbody.querySelectorAll('tr').length === 0) {
+        addQuestionRow('text');
+      }
     });
   </script>
 </body>

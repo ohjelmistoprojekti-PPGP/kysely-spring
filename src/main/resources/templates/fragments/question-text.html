@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+  <!-- Fragment for text question type -->
+  <tr th:fragment="textQuestion(index)">
+    <td>
+      <input type="text" class="form-control" th:name="|questions[${index}].questionText|"
+        placeholder="Kirjoita kysymys" />
+      <input type="hidden" th:name="|questions[${index}].questionType|" value="text" />
+    </td>
+    <td>
+      <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
+    </td>
+  </tr>
+</body>
+
+</html>
