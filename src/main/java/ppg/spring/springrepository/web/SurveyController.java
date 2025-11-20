@@ -2,7 +2,9 @@ package ppg.spring.springrepository.web;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,14 +71,27 @@ public class SurveyController {
 
     // Show a specific survey
     @GetMapping("/viewsurvey/{id}")
-    public String viewSurvey(@PathVariable("id") Long id, Model model) {
-        Survey survey = surveyRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
+public String viewSurvey(@PathVariable("id") Long id, Model model) {
+    Survey survey = surveyRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
 
-        model.addAttribute("survey", survey);
-        model.addAttribute("questions", survey.getQuestions());
-        return "viewsurvey"; // viewsurvey.html
-    }
+    // Viedään vain halutut kysymystiedot Mapissa
+    List<Map<String, Object>> questions = survey.getQuestions().stream()
+            .map(q -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", q.getQuestionId());
+                map.put("text", q.getQuestionText());
+                // Lisää tähän vain mitä haluat näyttää näkymässä:
+                map.put("type", q.getQuestionType());
+                return map;
+            })
+            .toList();
+
+    model.addAttribute("survey", survey);      // Voit näyttää otsikon, kuvauksen, jne.
+    model.addAttribute("questions", questions); // Siisti kysymyslista
+
+    return "viewsurvey";
+}
 
     // Edit survey
     @GetMapping("/editsurvey/{id}")

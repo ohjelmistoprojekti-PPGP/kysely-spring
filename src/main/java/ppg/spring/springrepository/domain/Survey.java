@@ -21,9 +21,7 @@ public class Survey {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long surveyId;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey", orphanRemoval = true)
-    @JsonIgnore
-    private List<Question> questions = new ArrayList<>();
+    
 
     // attributes
 
@@ -33,6 +31,10 @@ public class Survey {
     private LocalDateTime createdDate;
     private String startingDate;
     private String endingDate;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "survey", orphanRemoval = true)
+    //@JsonIgnore
+    private List<Question> questions = new ArrayList<>();
 
     // constructors
     public Survey(String surveyName, String surveyDesc, String startingDate,

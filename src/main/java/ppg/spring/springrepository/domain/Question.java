@@ -29,6 +29,7 @@ public class Question {
     private String questionType;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "surveyId")
     private Survey survey;
 

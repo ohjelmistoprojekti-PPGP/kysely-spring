@@ -14,7 +14,10 @@
 
     <h3>Kysymykset</h3>
     <ul class="list-group mb-3">
-        <li class="list-group-item" th:each="q : ${survey.questions}" th:text="${q.questionText}"></li>
+        <li class="list-group-item"
+        th:each="q : ${questions}">
+        <span th:text="${q['text']}"></span>
+        </li>
     </ul>
 
     <div class="container mb-3">
