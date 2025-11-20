@@ -50,7 +50,6 @@ public class SurveyController {
         survey.setStartingDate("");
         survey.setEndingDate("");
         survey.setQuestions(new ArrayList<>());
-        survey.getQuestions().add(new Question());
 
         model.addAttribute("survey", survey);
         return "addnewsurvey"; // addnewsurvey.html
