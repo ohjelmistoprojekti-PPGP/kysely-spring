@@ -71,27 +71,27 @@ public class SurveyController {
 
     // Show a specific survey
     @GetMapping("/viewsurvey/{id}")
-public String viewSurvey(@PathVariable("id") Long id, Model model) {
-    Survey survey = surveyRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
+    public String viewSurvey(@PathVariable("id") Long id, Model model) {
+        Survey survey = surveyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
 
-    // Viedään vain halutut kysymystiedot Mapissa
-    List<Map<String, Object>> questions = survey.getQuestions().stream()
-            .map(q -> {
-                Map<String, Object> map = new HashMap<>();
-                map.put("id", q.getQuestionId());
-                map.put("text", q.getQuestionText());
-                // Lisää tähän vain mitä haluat näyttää näkymässä:
-                map.put("type", q.getQuestionType());
-                return map;
-            })
-            .toList();
+        // Viedään vain halutut kysymystiedot Mapissa
+        List<Map<String, Object>> questions = survey.getQuestions().stream()
+                .map(q -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("id", q.getQuestionId());
+                    map.put("text", q.getQuestionText());
+                    // Lisää tähän vain mitä haluat näyttää näkymässä:
+                    map.put("type", q.getQuestionType());
+                    return map;
+                })
+                .toList();
 
-    model.addAttribute("survey", survey);      // Voit näyttää otsikon, kuvauksen, jne.
-    model.addAttribute("questions", questions); // Siisti kysymyslista
+        model.addAttribute("survey", survey); // Voit näyttää otsikon, kuvauksen, jne.
+        model.addAttribute("questions", questions); // Siisti kysymyslista
 
-    return "viewsurvey";
-}
+        return "viewsurvey";
+    }
 
     // Edit survey
     @GetMapping("/editsurvey/{id}")
@@ -100,7 +100,7 @@ public String viewSurvey(@PathVariable("id") Long id, Model model) {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid survey ID: " + id));
         survey.getQuestions().size();
         model.addAttribute("survey", survey);
-        return "editsurvey"; // TO-DO: editsurvey.html
+        return "editsurvey";
     }
 
     @PostMapping("/editsurvey/{id}")
