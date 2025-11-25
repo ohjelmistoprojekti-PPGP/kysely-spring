@@ -20,7 +20,7 @@ import ppg.spring.springrepository.domain.ResponseRepository;
 import ppg.spring.springrepository.domain.Survey;
 import ppg.spring.springrepository.domain.SurveyRepository;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class SurveyRestController {
