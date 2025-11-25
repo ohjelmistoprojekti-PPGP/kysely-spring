@@ -62,22 +62,61 @@
             </table>
 
             <!-- Template rivi (JS kloonaa tämän) -->
-            <template id="questionRowTemplate">
-                <tr>
-                    <td>
-                        <input type="hidden" name="questions[__INDEX__].questionId" value="" />
-                        <input type="text" name="questions[__INDEX__].questionText" class="form-control"
-                            placeholder="Kirjoita kysymys" required />
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
-                    </td>
-                </tr>
-            </template>
-            <p>
-                <button type="button" class="btn btn-outline-secondary" onclick="addQuestionRow()">Lisää
-                    kysymys</button>
-            </p>
+            <template id="textQuestionTemplate">
+  <tr data-question-type="text">
+    <td>
+      <input type="text" class="form-control" name="questions[__INDEX__].questionText" placeholder="Kirjoita kysymys" required/>
+      <input type="hidden" name="questions[__INDEX__].questionType" value="text" />
+    </td>
+    <td>
+      <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
+    </td>
+  </tr>
+</template>
+
+<template id="radioQuestionTemplate">
+  <tr data-question-type="radioButton">
+    <td>
+      <input type="text" class="form-control" name="questions[__INDEX__].questionText" placeholder="Kirjoita kysymys" required/>
+      <input type="hidden" name="questions[__INDEX__].questionType" value="radioButton" />
+      <div class="mt-2 options-container">
+        <label class="form-label small">Vastausvaihtoehdot:</label>
+        <div class="option-inputs">
+          <input type="text" class="form-control form-control-sm mb-1" name="questions[__INDEX__].options[0]" placeholder="Vaihtoehto 1" />
+          <input type="text" class="form-control form-control-sm mb-1" name="questions[__INDEX__].options[1]" placeholder="Vaihtoehto 2" />
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary mt-1" onclick="addOption(this, '__INDEX__')">+ Lisää vaihtoehto</button>
+      </div>
+    </td>
+    <td>
+      <button type="button" class="btn btn-danger" onclick="removeRow(this)">Poista</button>
+    </td>
+  </tr>
+</template>
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-secondary" onclick="addQuestionRow('text')">+ Tekstikysymys</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="addOption('radioButton')">+ Monivalintakysymys</button>
+            
+            </div>
+             <table id="questionsTable" class="table">
+          <tbody>
+            <!-- Render existing questions using fragments based on type -->
+            <th:block th:each="question, qStat : *{questions}">
+              <!-- Use text fragment -->
+              <th:block th:if="${question.questionType == 'text' or question.questionType == null}">
+                <th:block th:replace="~{fragments/question-text :: textQuestion(${qStat.index})}"></th:block>
+              </th:block>
+
+              <!-- Use radio button fragment -->
+              <th:block th:if="${question.questionType == 'radioButton'}">
+                <th:block
+                  th:replace="~{fragments/question-radiobutton :: radioQuestion(${qStat.index}, ${question.options.size() > 0 ? question.options.size() : 2})}">
+                </th:block>
+              </th:block>
+
+            </th:block>
+          </tbody>
+        </table>
 
             <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
                 <div>
@@ -106,6 +145,20 @@
             tbody.appendChild(tmp.querySelector('tr'));
         }
 
+        //lisää monivalintakysymys rivi ja vaihtoehdot
+        function addOption(btn, questionIndex) {
+      const optionsContainer = btn.previousElementSibling;
+      const optionCount = optionsContainer.querySelectorAll('input').length;
+
+      const newInput = document.createElement('input');
+      newInput.type = 'text';
+      newInput.className = 'form-control form-control-sm mb-1';
+      newInput.name = `questions[${questionIndex}].options[${optionCount}]`;
+      newInput.placeholder = `Vaihtoehto ${optionCount + 1}`;
+
+      optionsContainer.appendChild(newInput);
+    }
+
         // Poistaa rivin
         function removeRow(btn) {
             const tr = btn.closest('tr');
@@ -130,13 +183,17 @@
                     }
                 });
             });
+            const addOptionBtn = tr.querySelector('button[onclick*="addOption"]');
+        if (addOptionBtn) {
+          addOptionBtn.setAttribute('onclick', `addOption(this, ${questionIdx})`);
+        }
         }
 
-        // Alusta vähintään yksi rivi, jos tyhjä
-        document.addEventListener('DOMContentLoaded', function () {
-            const tbody = document.querySelector('#questionsTable tbody');
-            if (tbody.querySelectorAll('tr').length === 0) addQuestionRow();
-        });
+        // // Alusta vähintään yksi rivi, jos tyhjä
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const tbody = document.querySelector('#questionsTable tbody');
+        //     if (tbody.querySelectorAll('tr').length === 0) addQuestionRow();
+        // });
     </script>
 </body>
 
