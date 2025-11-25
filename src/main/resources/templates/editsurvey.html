@@ -91,13 +91,6 @@
                 </tr>
             </template>
 
-            <div class="mb-3">
-                <button type="button" class="btn btn-outline-secondary" onclick="addQuestionRow('text')">+
-                    Tekstikysymys</button>
-                <button type="button" class="btn btn-outline-secondary" onclick="addQuestionRow('radioButton')">+
-                    Monivalintakysymys</button>
-            </div>
-
             <table id="questionsTable" class="table">
                 <tbody>
                     <th:block th:each="question, qStat : *{questions}">
@@ -148,6 +141,14 @@
                     </th:block>
                 </tbody>
             </table>
+
+            <div class="mb-3">
+                <button type="button" class="btn btn-secondary" onclick="addQuestionRow('text')">+
+                    Tekstikysymys</button>
+                <button type="button" class="btn btn-secondary" onclick="addQuestionRow('radioButton')">+
+                    Monivalintakysymys</button>
+            </div>
+
 
             <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
                 <div>
